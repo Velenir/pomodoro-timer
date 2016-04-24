@@ -1,7 +1,25 @@
 extend partials/layout
 
 block content
-	header
-	main
-		h2 Pomodoro start
+	h2 Pomodoro start
+	.controls
+		.workTimer
+			p Work Length
+			button.plus(type="button", ) +
+			p.time 5
+			button.minus(type="button", ) -
+		.breakTimer
+			p Break Length
+			button.plus(type="button", ) +
+			p.time 5
+			button.minus(type="button", ) -
+	
+	.tomatoTimer
+		.svgSpace
+		p.title Session
+		p.time 25
 		
+	.progress
+		progress(value="50", max="100") 50%
+	
+	

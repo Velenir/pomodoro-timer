@@ -6,9 +6,21 @@ $relative-size: 50;
 $max-size: 400px;
 $tomato-font-size: 3em;
 $tomato-timer-font-size: 2.5em;
+$seconds-left-radius: 49;
 
 @function strip-units($value) {
 	@return $value / ($value * 0 + 1);
+}
+
+@function dashlist($len, $parts: 60) {
+	$dashL: $len/$parts;
+	$l: ();
+
+	@for $i from 1 through $parts {
+		$l: join($l, $dashL * 0.6 $dashL * 0.4);
+	}
+
+	@return $l;
 }
 
 body {
@@ -61,10 +73,12 @@ body {
 	background-color: red;
 	position: relative;
 	box-shadow: 0 0 10px 5px #555;
+	transition: box-shadow 2s, transform 2s;
 
 	&:active {
 		box-shadow: none;
 		transform: scale(.99, .99);
+		transition: box-shadow .5s, transform .5s;
 	}
 
 	p {
@@ -123,10 +137,9 @@ body {
 			}
 
 			> #secondsLeft {
-				$r: 49;
-				r: $r * 1%;
-				$darr: round($r * 6.285714286);
-				stroke-dasharray: 0 0 $darr;
+				r: $seconds-left-radius * 1%;
+				$darr: round($seconds-left-radius * 6.285714286);
+				stroke-dasharray: dashlist($darr) $darr;
 				stroke: #c11f1f;
 				stroke-width: 2;
 				fill: none;

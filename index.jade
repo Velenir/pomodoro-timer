@@ -22,7 +22,7 @@ block content
 					clipPath#clipPath
 						path(id="arcMask", d="M50,0  a50,50 0 1,0 0.03141592446881286,0.000009869604078005523 z", style="stroke: #cccc00; stroke-width:2; fill:lightblue; stroke-linejoin: round;")
 				text(x='50%', y='50%', dy="15%") 25
-				circle#secondsLeft(cx='50%', cy='50%', transform='rotate(-90 50 50)')
+				circle#secondsLeft(cx='50%', cy='50%', r="49%", transform='rotate(-90 50 50)')
 
 		p.session Session
 		p.seconds :25
@@ -112,6 +112,7 @@ block scripts
 				const fct = Math.round(r * 6.285714286)/100;
 				
 				console.log("r:", r);
+				console.log("r attr:", circSecondsLeft.getAttribute("r"));
 
 				function sliderChanged(event) {
 					let val = 100 - this.value;

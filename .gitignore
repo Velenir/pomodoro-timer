@@ -41,6 +41,9 @@ dump
 #ESLint config file
 .eslintrc.json
 
+#Stylelint config file
+.stylelintrc
+
 #distribution ready files
 dist
 

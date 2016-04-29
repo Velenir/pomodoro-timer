@@ -5,6 +5,11 @@
 $relative-size: 50;
 $max-size: 400px;
 $tomato-font-size: 3em;
+$tomato-timer-font-size: 2.5em;
+
+@function strip-units($value) {
+	@return $value / ($value * 0 + 1);
+}
 
 body {
 	min-height: 100vh;
@@ -26,7 +31,18 @@ body {
 	width: $relative-size * 1%;
 	max-width: $max-size;
 
+	button.plus {
+		border-radius: 50% 50% 0 0;
+		width: 40px;
+		height: 30px;
+		font-size: 1.5em;
+		text-shadow: 0 1px gray;
 
+		&:focus {
+			border: none;
+			// FIXME
+		}
+	}
 
 	div:last-child {
 		float: right;
@@ -42,9 +58,84 @@ body {
 	min-width: 5 * $tomato-font-size;
 	min-height: 5 * $tomato-font-size;
 	border-radius: 50%;
+	background-color: red;
+	position: relative;
+	box-shadow: 0 0 10px 5px #555;
+
+	&:active {
+		box-shadow: none;
+		transform: scale(.99, .99);
+	}
 
 	p {
 		text-align: center;
 		font-size: $tomato-font-size;
+		color: white;
+
+		&.session {
+			position: absolute;
+			left: 0;
+			right: 0;
+		}
+
+		&.seconds {
+			position: absolute;
+			bottom: 5%;
+			left: 0;
+			right: 0;
+			transform: translateX(-1.5%);
+			margin: 0;
+			visibility: hidden;
+
+			@at-root .tomatoTimer:hover .seconds {
+				visibility: visible;
+			}
+		}
+	}
+
+	.svgSpace {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+
+		svg {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+
+			.all-tomato {
+				clip-path: url(#clipPath);
+			}
+
+			> text {
+				font-size: $tomato-timer-font-size;
+
+				/* 1rem = 16px; */
+				$stroke-dArr: strip-units($tomato-timer-font-size) * 220;
+				stroke-dasharray: $stroke-dArr $stroke-dArr;
+				text-anchor: middle;
+				dominant-baseline: central;
+				fill: none;
+				stroke: #c8b9b9;
+				stroke-width: .7;
+			}
+
+			> #secondsLeft {
+				$r: 49;
+				r: $r * 1%;
+				$darr: round($r * 6.285714286);
+				stroke-dasharray: 0 0 $darr;
+				stroke: #c11f1f;
+				stroke-width: 2;
+				fill: none;
+				visibility: hidden;
+
+				@at-root .tomatoTimer:hover .svgSpace svg > #secondsLeft {
+					visibility: visible;
+				}
+			}
+		}
 	}
 }

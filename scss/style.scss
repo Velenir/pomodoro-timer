@@ -6,7 +6,9 @@ $relative-size: 50;
 $max-size: 400px;
 $tomato-font-size: 3em;
 $tomato-timer-font-size: 2.5em;
-$seconds-left-radius: 49;
+$seconds-left-radius: 51;
+
+$body-color: #DA2222;
 
 @function strip-units($value) {
 	@return $value / ($value * 0 + 1);
@@ -30,6 +32,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	// background-color: $body-color;
 }
 
 .controls, .controls > div, .tomatoTimer, .progressBar {
@@ -43,17 +46,28 @@ body {
 	width: $relative-size * 1%;
 	max-width: $max-size;
 
-	button.plus {
-		border-radius: 50% 50% 0 0;
+	%button {
 		width: 40px;
 		height: 30px;
 		font-size: 1.5em;
 		text-shadow: 0 1px gray;
+		outline: none;
+		background-color: #FD6639;
+	}
+
+	button.plus {
+		@extend %button;
+		border-radius: 50% 50% 0 0;
 
 		&:focus {
-			border: none;
+			box-shadow: none;
 			// FIXME
 		}
+	}
+
+	button.minus {
+		@extend %button;
+		border-radius: 0 0 50% 50%;
 	}
 
 	div:last-child {
@@ -118,6 +132,7 @@ body {
 			position: absolute;
 			top: 50%;
 			transform: translateY(-50%);
+			overflow: visible;
 
 			.all-tomato {
 				clip-path: url(#clipPath);
@@ -134,10 +149,16 @@ body {
 				fill: none;
 				stroke: #c8b9b9;
 				stroke-width: .7;
+
+				transition: stroke-dashoffset 1s linear;
+				&.changing {
+					stroke-dashoffset: $stroke-dArr;
+					transition: stroke-dashoffset 2s linear;
+				}
 			}
 
 			> #secondsLeft {
-				r: $seconds-left-radius * 1%;
+				// r: $seconds-left-radius * 1%;
 				$darr: round($seconds-left-radius * 6.285714286);
 				stroke-dasharray: dashlist($darr) $darr;
 				stroke: #c11f1f;

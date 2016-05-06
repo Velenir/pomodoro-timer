@@ -5,14 +5,14 @@ block content
 	.controls
 		.workTimer
 			p Work Length
-			button.plus(type="button", ) +
+			button.plus(type="button") +
 			p.time 5
-			button.minus(type="button", ) -
+			button.minus(type="button") -
 		.breakTimer
 			p Break Length
-			button.plus(type="button", ) +
+			button.plus(type="button") +
 			p.time 5
-			button.minus(type="button", ) -
+			button.minus(type="button") -
 
 	.tomatoTimer
 		.svgSpace
@@ -21,8 +21,8 @@ block content
 				+tomato('clipPath')
 					clipPath#clipPath
 						path(id="arcMask", d="M50,0  a50,50 0 1,0 0.03141592446881286,0.000009869604078005523 z", style="stroke: #cccc00; stroke-width:2; fill:lightblue; stroke-linejoin: round;")
-				text(x='50%', y='50%', dy="15%") 25
-				circle#secondsLeft(cx='50%', cy='50%', r="49%", transform='rotate(-90 50 50)')
+				text#minutesSvg(x='50%', y='50%', dy="15%") 25
+				circle#secondsLeft(cx='50%', cy='50%', r="51%", transform='rotate(-90 50 50)')
 
 		p.session Session
 		p.seconds :25
@@ -89,15 +89,17 @@ block scripts
 		
 		//######################################
 		$(document).ready(function() {
-				let $svgNum = $('svg > text');
-				console.log(parseInt($svgNum.css('stroke-dasharray'), 10));
-				const dOffset = parseInt($svgNum.css('stroke-dasharray'), 10);
-				$('#num').on('change', function (event) {
-					console.log(this.value);
-					// $svgNum.text(this.value);
-					$svgNum.animate({
-						"stroke-dashoffset": dOffset},	//480
-						2000, () => $svgNum.text(this.value).animate({"stroke-dashoffset": 0}, 1000));
+						
+				const num = document.getElementById('num');
+				const minutesSvg = document.getElementById('minutesSvg');
+				
+				minutesSvg.addEventListener('transitionend', function() {
+					this.textContent = num.value;
+					this.classList.remove('changing');
+				});
+				
+				num.addEventListener('change', function() {
+					minutesSvg.classList.add('changing');
 				});
 				
 				
@@ -108,11 +110,12 @@ block scripts
 				const sliderOut2 = document.getElementById('sliderOut2');
 				const circSecondsLeft = document.getElementById('secondsLeft');
 				
-				const r = parseInt(window.getComputedStyle(circSecondsLeft).r, 10);
+				//- const r = parseInt(window.getComputedStyle(circSecondsLeft).r, 10);
+				const r = parseInt(circSecondsLeft.getAttribute("r"), 10);
 				const fct = Math.round(r * 6.285714286)/100;
 				
-				console.log("r:", r);
-				console.log("r attr:", circSecondsLeft.getAttribute("r"));
+				//- console.log("r:", r);
+				//- console.log("r attr:", circSecondsLeft.getAttribute("r"));
 
 				function sliderChanged(event) {
 					let val = 100 - this.value;

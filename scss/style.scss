@@ -2,6 +2,10 @@
 	box-sizing: border-box;
 }
 
+button::-moz-focus-inner {
+	border: none;
+}
+
 $relative-size: 50;
 $max-size: 400px;
 $tomato-font-size: 3em;

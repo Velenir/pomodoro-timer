@@ -13,6 +13,7 @@ $tomato-timer-font-size: 2.5em;
 $seconds-left-radius: 51;
 
 $body-color: #DA2222;
+$controls-color: #DC2C2C;
 
 @function strip-units($value) {
 	@return $value / ($value * 0 + 1);
@@ -29,6 +30,10 @@ $body-color: #DA2222;
 	@return $l;
 }
 
+@function raisedshadow($yFactor: 1) {
+	@return 0 $yFactor*3px 5px 0 rgba(0, 0, 0, 0.2), 0 $yFactor*5px 10px 0 rgba(0, 0, 0, 0.247059), 0 $yFactor*20px 20px 0 rgba(0, 0, 0, 0.14902);
+}
+
 body {
 	min-height: 100vh;
 	margin: 0;
@@ -36,7 +41,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	// background-color: $body-color;
+	background-color: $body-color;
 }
 
 .controls, .controls > div, .tomatoTimer, .progressBar {
@@ -49,6 +54,22 @@ body {
 	justify-content: space-between;
 	width: $relative-size * 1%;
 	max-width: $max-size;
+	border-radius: 50%;
+	background-color: $controls-color;
+	border: none;
+	margin-bottom: 30px;
+
+	.title {
+		position: absolute;
+		bottom: 100%;
+		left: 0;
+		right: 0;
+	}
+	.time {
+		font-size: 1.5em;
+		color: white;
+		margin: 15px;
+	}
 
 	%button {
 		width: 40px;
@@ -56,27 +77,53 @@ body {
 		font-size: 1.5em;
 		text-shadow: 0 1px gray;
 		outline: none;
-		background-color: #FD6639;
+		background-color: inherit;
+		border-color: gray;
+
+		&:active, &:active:focus {
+			box-shadow: none;
+			border: 1px solid gray;
+		}
 	}
 
 	button.plus {
 		@extend %button;
 		border-radius: 50% 50% 0 0;
-		box-shadow: 0 1px 0 0 rgb(119, 119, 119), 0 2px 0 0 rgb(119, 119, 119), 0 3px 0 0 rgb(119, 119, 119), 0 4px 0 0 rgb(119, 119, 119), 0 5px 0 0 rgb(119, 119, 119), 0 6px 0 0 rgb(119, 119, 119), 0 0 5px 0 rgba(0, 0, 0, 0.0980392), 0 1px 3px 0 rgba(0, 0, 0, 0.298039), 0 3px 5px 0 rgba(0, 0, 0, 0.2), 0 5px 10px 0 rgba(0, 0, 0, 0.247059), 0 10px 10px 0 rgba(0, 0, 0, 0.2), 0 20px 20px 0 rgba(0, 0, 0, 0.14902);
-
-		&:focus {
-			box-shadow: none;
-			// FIXME
+		box-shadow: raisedshadow();
+		&:active {
+			transform: translateY(4px);
 		}
 	}
 
 	button.minus {
 		@extend %button;
 		border-radius: 0 0 50% 50%;
+		box-shadow: raisedshadow(-1);
+		&:active {
+			transform: translateY(-4px);
+		}
 	}
 
-	> div:last-child {
-		float: right;
+	%controltimer {
+		border-radius: 50%;
+		background-color: inherit;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		width: 100px;
+
+		/* border: none; */
+		position: relative;
+	}
+
+	> .breakTimer {
+		@extend %controltimer;
+		box-shadow: -2px 0 5px gray;
+	}
+	> .workTimer {
+		@extend %controltimer;
+		box-shadow: 2px 0 5px gray;
 	}
 }
 

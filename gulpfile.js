@@ -10,6 +10,7 @@ const concat = require('gulp-concat');
 
 const src = {
 	scss: 'scss/*.scss',
+	scssPartials: 'scss/partials/*.scss',
 	jade: '*.jade',
 	jadePartials: 'partials/*jade',
 	js: ['js/pubsub.js', 'js/*.js']
@@ -29,7 +30,7 @@ gulp.task('serve', ['sass', 'jade', 'javascript'], function() {
 		}
 	});
 
-	gulp.watch(src.scss, ['sass']);
+	gulp.watch([src.scss, src.scssPartials], ['sass']);
 	gulp.watch([src.jade, src.jadePartials], ['jade']);
 	gulp.watch(src.js, ['javascript']);
 });

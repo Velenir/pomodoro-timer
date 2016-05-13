@@ -40,8 +40,9 @@ class EventDispatcher {
 }
 
 class EventfulClass {
-	constructor() {
-		this.dispatcher = new EventDispatcher();
+	constructor(eventDispatcher = new EventDispatcher()) {
+		if(!(eventDispatcher instanceof EventDispatcher)) throw new TypeError("eventDispatcher must be an instance of EventDispatcher");
+		this._dispatcher = eventDispatcher;
 	}
 
 	on(...args) {

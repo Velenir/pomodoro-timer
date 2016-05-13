@@ -12,8 +12,12 @@ $tomato-font-size: 3em;
 $tomato-timer-font-size: 2.5em;
 $seconds-left-radius: 51;
 
-$body-color: #DA2222;
-$controls-color: #DC2C2C;
+$body-color: #DA2222 !default;
+$controls-color: #DC2C2C !default;
+$controls-text-color: white !default;
+$tomato-text-color: white !default;
+$tomato-minutes-color: #c8b9b9 !default;
+$tomato-secondsleft-color: #c11f1f !default;
 
 @function strip-units($value) {
 	@return $value / ($value * 0 + 1);
@@ -64,10 +68,11 @@ body {
 		bottom: 100%;
 		left: 0;
 		right: 0;
+		color: darken($controls-text-color, 30%);
 	}
 	.time {
 		font-size: 1.5em;
-		color: white;
+		color: $controls-text-color;
 		margin: 15px;
 	}
 
@@ -150,10 +155,11 @@ body {
 	p {
 		text-align: center;
 		font-size: $tomato-font-size;
-		color: white;
+		color: $tomato-text-color;
 
 		&.session {
 			position: absolute;
+			top: 0;
 			left: 0;
 			right: 0;
 		}
@@ -173,17 +179,8 @@ body {
 		}
 	}
 
-	.svgSpace {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-
-		svg {
-			position: absolute;
-			top: 50%;
-			transform: translateY(-50%);
+	> .svgSpace {
+		> svg {
 			overflow: visible;
 
 			.all-tomato {
@@ -199,7 +196,7 @@ body {
 				text-anchor: middle;
 				dominant-baseline: central;
 				fill: none;
-				stroke: #c8b9b9;
+				stroke: $tomato-minutes-color;
 				stroke-width: .7;
 
 				transition: stroke-dashoffset 1s linear;
@@ -213,7 +210,7 @@ body {
 				// r: $seconds-left-radius * 1%;
 				$darr: round($seconds-left-radius * 6.285714286);
 				stroke-dasharray: dashlist($darr) $darr;
-				stroke: #c11f1f;
+				stroke: $tomato-secondsleft-color;
 				stroke-width: 2;
 				fill: none;
 				visibility: hidden;

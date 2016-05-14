@@ -8,6 +8,12 @@ block content
 			button.plus(type="button") +
 			p.time 5
 			button.minus(type="button") -
+		.midPanel
+			each cls in ["icon-volume", "icon-clock-minutes", "icon-clock-filled", "icon-progress"]
+				label.icon(class=cls)
+					input(type="checkbox", id=cls)
+					span
+				
 		.breakTimer
 			p.title Break Length
 			button.plus(type="button") +

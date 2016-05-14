@@ -1,0 +1,35 @@
+$text-font: 16pt sans-serif !default;
+$icon-font: 16pt sans-serif !default;
+
+$unchecked-content: '\2610' !default;
+$checked-content: '\2611' !default;
+
+input[type="checkbox"] {
+	position: absolute;
+	opacity: 0;
+	z-index: -1;
+
+	+ span {
+		font: $text-font;
+		color: #000;
+
+		&::before {
+			font: $icon-font;
+			content: $unchecked-content;
+			display: inline-block;
+			width: 1.3em;
+		}
+
+		&:not(:empty)::before {
+			margin-right: .5em;
+		}
+	}
+
+	&:checked + span::before {
+		content: $checked-content;
+	}
+
+	&:disabled + span {
+		color: #999;
+	}
+}

@@ -6,6 +6,9 @@ button::-moz-focus-inner {
 	border: none;
 }
 
+@import "partials/checkboxes";
+@import "partials/icons";
+
 $relative-size: 50;
 $max-size: 400px;
 $tomato-font-size: 3em;
@@ -48,9 +51,10 @@ body {
 	background-color: $body-color;
 }
 
-.controls, .controls > div, .tomatoTimer, .progressBar {
-	border: 1px solid gray;
-}
+// REMOVE
+// .controls > div, .tomatoTimer, .progressBar {
+// 	border: 1px solid gray;
+// }
 
 .controls {
 	text-align: center;
@@ -62,6 +66,33 @@ body {
 	background-color: $controls-color;
 	border: none;
 	margin-bottom: 30px;
+
+	.tomatoTimer, .progressBar {
+		border: 1px solid gray;
+	}
+
+	.midPanel {
+		// otherwise moves when child is transltedY(*px)
+		display: flex;
+		align-self: center;
+		> label {
+			margin: 0 2px;
+
+			> input[type="checkbox"] {
+				&:checked + span::before {
+					box-shadow: none;
+					border: 1px solid gray;
+					transform: translateY(2px);
+				}
+
+				+ span::before {
+					font-size: 20pt;
+					border: 2px outset gray;
+					box-shadow: raisedshadow(0.2);
+				}
+			}
+		}
+	}
 
 	.title {
 		position: absolute;

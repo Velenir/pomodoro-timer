@@ -72,11 +72,11 @@ body {
 	}
 
 	.midPanel {
-		// otherwise moves when child is transltedY(*px)
-		display: flex;
 		align-self: center;
 		> label {
 			margin: 0 2px;
+			// otherwise moves .midPanel when child is transltedY(*px)
+			vertical-align: -1em;
 
 			> input[type="checkbox"] {
 				&:checked + span::before {

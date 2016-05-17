@@ -1,0 +1,139 @@
+progress {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	height: 50px;
+	box-sizing: border-box;
+	border: 10px solid #555;
+	border-radius: 25px;
+	background-color: #BF9090;
+	box-shadow: inset 0 0 4px 1px black;
+	&:not([value]) {
+		@mixin indeterminate {
+			background: #BF9090;
+			box-shadow: inset 0 0 4px 1px black;
+		}
+		&::-moz-progress-bar {
+			border-top-right-radius: 20px;
+			border-bottom-right-radius: 20px;
+
+			@include indeterminate;
+		}
+		&::-ms-fill {
+			border-top-right-radius: 20px;
+			border-bottom-right-radius: 20px;
+
+			@include indeterminate;
+		}
+		&::-webkit-progress-bar {
+			@include indeterminate;
+		}
+	}
+	&::-webkit-progress-bar {
+		border-radius: 20px;
+		background-color: #BF9090;
+		box-shadow: inset 0 0 4px 1px black;
+	}
+
+	@mixin progress-valuebar {
+		border-radius: 20px 8px 8px 20px;
+		background-color: #2bc253;
+		background-image: linear-gradient(to bottom, rgb(43, 194, 83) 37%, rgb(84, 240, 84) 69%);
+		box-shadow: inset 0 0 4px 1px #231e1e;
+	}
+	&::-webkit-progress-value {
+		@include progress-valuebar;
+	}
+	&::-moz-progress-bar {
+		@include progress-valuebar;
+	}
+	&::-ms-fill {
+		@include progress-valuebar;
+	}
+	&[value="100"] {
+		@mixin fullbar {
+			border-top-right-radius: 20px;
+			border-bottom-right-radius: 20px;
+		}
+		&::-moz-progress-bar {
+			@include fullbar;
+		}
+		&::-ms-fill {
+			@include fullbar;
+		}
+		&::-webkit-progress-value {
+			@include fullbar;
+		}
+	}
+	&.orange {
+		@mixin orange {
+			background-color: orange;
+			background-image: linear-gradient(to bottom, #f1a165, #f36d0a);
+		}
+		&::-moz-progress-bar {
+			@include orange;
+		}
+		&::-ms-fill {
+			@include orange;
+		}
+		&::-webkit-progress-value {
+			@include orange;
+		}
+	}
+	&.red {
+		@mixin red {
+			background-color: red;
+			background-image: linear-gradient(to bottom, #f0a3a3, #f42323);
+		}
+		&::-moz-progress-bar {
+			@include red;
+		}
+		&::-ms-fill {
+			@include red;
+		}
+		&::-webkit-progress-value {
+			@include red;
+		}
+	}
+	&.meter-animated,
+	&.meter-striped {
+		@mixin striped {
+			background-image: linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+			background-size: 50px 50px;
+		}
+		&::-moz-progress-bar {
+			@include striped;
+		}
+		&::-ms-fill {
+			@include striped;
+		}
+		&::-webkit-progress-value {
+			@include striped;
+		}
+	}
+	&.meter-animated {
+		animation: move 2s linear infinite;
+		&::-webkit-progress-bar,
+		&::-webkit-progress-inner-element,
+		&::-webkit-progress-value {
+			/* ShadowDOM can't access @keyframes from outside
+			Other than inject styles into the Component itself, we can make inside elements inherit the animated values
+			This is ugly and heavy processing */
+			background-position: inherit;
+		}
+		&::-moz-progress-bar {
+			background-position: inherit;
+		}
+		&::-ms-fill {
+			background-position: inherit;
+		}
+	}
+}
+
+@keyframes move {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 50px 50px;
+	}
+}

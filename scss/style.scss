@@ -8,6 +8,7 @@ button::-moz-focus-inner {
 
 @import "partials/checkboxes";
 @import "partials/icons";
+@import "partials/progressbar";
 
 $relative-size: 50;
 $max-size: 400px;
@@ -250,6 +251,23 @@ body {
 					visibility: visible;
 				}
 			}
+		}
+	}
+}
+
+.progress {
+	width: 50%;
+	max-width: $max-size;
+	min-width: 5 * $tomato-font-size;
+	margin-top: 30px;
+
+	> progress {
+		width: 100%;
+		border-color: #D62B2B;
+		background-color: #D15656;
+		
+		&::-webkit-progress-bar {
+			background-color: #D15656;
 		}
 	}
 }

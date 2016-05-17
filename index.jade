@@ -34,10 +34,7 @@ block content
 		p.seconds :25
 
 	.progress
-		.meter.red.meter-animated
-			span(style='width:100%')
-
-		progress(value="50", max="100") 50%
+		progress.red.meter-animated(value="50", max="100") 50%
 		hr
 		input#maskRange(type="range", name="name", value="100")
 		output#sliderOut

@@ -39,31 +39,31 @@ span::before {
 			-moz-osx-font-smoothing: grayscale;
 		}
 		.icon-progress > & {
-			content: $icon-progress-empty;
-		}
-		.icon-clock-minutes > & {
-			content: $icon-clock-minutes;
-		}
-		.icon-clock-filled > & {
-			content: $icon-clock-bold;
-		}
-		.icon-volume > & {
-			content: $icon-volume_off;
-		}
-	}
-
-	input[type="checkbox"]:checked + & {
-		.icon-progress > & {
 			content: $icon-progress-two;
 		}
 		.icon-clock-minutes > & {
-			content: $icon-clock;
+			content: $icon-clock-minutes;
 		}
 		.icon-clock-filled > & {
 			content: $icon-clock-bold-filled;
 		}
 		.icon-volume > & {
 			content: $icon-volume_up;
+		}
+	}
+
+	input[type="checkbox"]:checked + & {
+		.icon-progress > & {
+			content: $icon-progress-empty;
+		}
+		.icon-clock-minutes > & {
+			content: $icon-clock;
+		}
+		.icon-clock-filled > & {
+			content: $icon-clock-bold;
+		}
+		.icon-volume > & {
+			content: $icon-volume_off;
 		}
 	}
 }

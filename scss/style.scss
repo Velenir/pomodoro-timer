@@ -23,6 +23,18 @@ $tomato-text-color: white !default;
 $tomato-minutes-color: #c8b9b9 !default;
 $tomato-secondsleft-color: #c11f1f !default;
 
+.show {
+	display: unset;
+}
+
+.hidden {
+	display: none;
+}
+
+.invisible {
+	visibility: hidden;
+}
+
 @function strip-units($value) {
 	@return $value / ($value * 0 + 1);
 }

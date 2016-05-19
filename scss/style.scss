@@ -287,6 +287,11 @@ body {
 		border-color: #D62B2B;
 		background-color: #D15656;
 
+		&.progress-off {
+			@extend .invisible;
+			animation: none;
+		}
+
 		&::-webkit-progress-bar {
 			background-color: #D15656;
 		}

@@ -80,6 +80,12 @@ body {
 	border: none;
 	margin-bottom: 30px;
 
+	// same in Chrome and Firefox
+	%uniform-btn-border {
+		border-style: solid;
+		border-color: gray #2C2C2C #2C2C2C gray;
+	}
+
 	.tomatoTimer, .progressBar {
 		border: 1px solid gray;
 	}
@@ -100,8 +106,10 @@ body {
 
 				+ span::before {
 					font-size: 20pt;
-					border: 2px outset gray;
+					border-width: 2px;
 					box-shadow: raisedshadow(0.2);
+
+					@extend %uniform-btn-border;
 				}
 			}
 		}
@@ -127,7 +135,8 @@ body {
 		text-shadow: 0 1px gray;
 		outline: none;
 		background-color: inherit;
-		border-color: gray;
+
+		@extend %uniform-btn-border;
 
 		&:active, &:active:focus {
 			box-shadow: none;

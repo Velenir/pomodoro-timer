@@ -1,4 +1,5 @@
 //events - a super-basic Javascript (publish subscribe) pattern
+"use strict";
 
 class EventDispatcher {
 
@@ -43,6 +44,10 @@ class EventfulClass {
 	constructor(eventDispatcher = new EventDispatcher()) {
 		if(!(eventDispatcher instanceof EventDispatcher)) throw new TypeError("eventDispatcher must be an instance of EventDispatcher");
 		this._dispatcher = eventDispatcher;
+	}
+
+	get dispatcher() {
+		return this._dispatcher;
 	}
 
 	on(...args) {

@@ -187,7 +187,7 @@ body {
 
 .tomatoTimer {
 	width: $relative-size * 1%;
-	// vw keeps height dependent on width (rectangular)
+	// vw keeps height dependent on width (square)
 	height: $relative-size * 1vw;
 	max-width: $max-size;
 	max-height: $max-size;

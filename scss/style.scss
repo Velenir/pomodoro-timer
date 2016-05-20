@@ -23,6 +23,8 @@ $tomato-text-color: white !default;
 $tomato-minutes-color: #c8b9b9 !default;
 $tomato-secondsleft-color: #c11f1f !default;
 
+@import url(https://fonts.googleapis.com/css?family=Pacifico|Open+Sans:300);
+
 .show {
 	display: unset;
 }
@@ -64,6 +66,13 @@ body {
 	background-color: $body-color;
 }
 
+.headTitle {
+	font: 3rem Pacifico, sans-serif;
+	color: #FBE2E2;
+	text-align: center;
+	margin-top: 0;
+}
+
 // REMOVE
 // .controls > div, .tomatoTimer, .progressBar {
 // 	border: 1px solid gray;
@@ -77,10 +86,16 @@ body {
 	text-shadow: 0.5px 0.5px gray;
 	box-shadow: raisedshadow(3, 0.7);
 	margin: 10px 0 0 10px;
+	background-color: #DC2C2C;
+	color: #E8D0D7;
 
-	> ul {
+	ul {
 		list-style: none;
-		padding-left: 0;
+		padding-left: 1em;
+
+		span {
+			color: inherit;
+		}
 	}
 }
 
@@ -135,7 +150,9 @@ body {
 		bottom: 100%;
 		left: 0;
 		right: 0;
-		color: darken($controls-text-color, 30%);
+		color: darken($controls-text-color, 20%);
+		font-weight: bold;
+		// #DEC9C9
 	}
 	.time {
 		font-size: 1.5em;

@@ -148,11 +148,11 @@ body {
 	.title {
 		position: absolute;
 		bottom: 100%;
-		left: 0;
-		right: 0;
+		// left, right: 0 doesn't fit on one line in Firefox
+		left: -20%;
+		right: -20%;
 		color: darken($controls-text-color, 20%);
 		font-weight: bold;
-		// #DEC9C9
 	}
 	.time {
 		font-size: 1.5em;

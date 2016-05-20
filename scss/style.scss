@@ -6,6 +6,10 @@ button::-moz-focus-inner {
 	border: none;
 }
 
+button {
+	cursor: pointer;
+}
+
 @import "partials/checkboxes";
 @import "partials/icons";
 @import "partials/progressbar";
@@ -230,6 +234,7 @@ body {
 	position: relative;
 	box-shadow: 0 0 10px 5px #555;
 	transition: box-shadow 2s, transform 2s;
+	cursor: pointer;
 
 	&:active {
 		box-shadow: none;

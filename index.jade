@@ -56,7 +56,7 @@ block content
 		hr
 		input#num(type='number', value='25', min='0', max='50')
 		hr
-		input#secondsSlider(type='range', value='100')
+		input#secondsSlider(type='range', value='60', max='60')
 		output#sliderOut2 0
 
 
@@ -130,23 +130,23 @@ block scripts
 				//- const r = 30;
 				
 				
-				const sliderOut2 = document.getElementById('sliderOut2');
-				const circSecondsLeft = document.getElementById('secondsLeft');
-				
-				//- const r = parseInt(window.getComputedStyle(circSecondsLeft).r, 10);
-				const r = parseInt(circSecondsLeft.getAttribute("r"), 10);
-				const fct = Math.round(r * 6.285714286)/100;
-				
-				//- console.log("r:", r);
-				//- console.log("r attr:", circSecondsLeft.getAttribute("r"));
-
-				function sliderChanged(event) {
-					let val = 100 - this.value;
-					sliderOut2.value = this.value;
-				  circSecondsLeft.style["stroke-dashoffset"] = -fct* val;
-				}
-
-				document.getElementById('secondsSlider').oninput = sliderChanged;
+				//- const sliderOut2 = document.getElementById('sliderOut2');
+				//- const circSecondsLeft = document.getElementById('secondsLeft');
+				//- 
+				//- //- const r = parseInt(window.getComputedStyle(circSecondsLeft).r, 10);
+				//- const r = parseInt(circSecondsLeft.getAttribute("r"), 10);
+				//- const fct = Math.round(r * 6.285714286)/100;
+				//- 
+				//- //- console.log("r:", r);
+				//- //- console.log("r attr:", circSecondsLeft.getAttribute("r"));
+				//- 
+				//- function sliderChanged(event) {
+				//- 	let val = 100 - this.value * 5 / 3;
+				//- 	sliderOut2.value = this.value;
+				//-   circSecondsLeft.style["stroke-dashoffset"] = -fct* val;
+				//- }
+				//- 
+				//- document.getElementById('secondsSlider').oninput = sliderChanged;
 		});
 		
 		

@@ -37,7 +37,7 @@ block content
 			svg(xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', viewBox='0 0 100 100', preserveAspectratio='none')
 				defs
 					clipPath#clipPath
-						path(id="arcMask", d="M50,0  a50,50 0 1,0 0.03141592446881286,0.000009869604078005523 z", style="stroke: #cccc00; stroke-width:2; fill:lightblue; stroke-linejoin: round;")
+						path(id="arcClip", d="M50,0  a50,50 0 1,0 0.03141592446881286,0.000009869604078005523 z")
 					clippath(id=clickhoverMask, clipPathUnits="objectBoundingBox")
 						circle(cx='0.5', cy='0.5', r='0.51')
 				include partials/tomato
@@ -65,50 +65,50 @@ block content
 block scripts
 	script.
 		
-		class ArcMask {
-			constructor(element, startX = 50, startY = 0, radius = 50) {
-				this._element = element;
-				this._startX = startX;
-				this._startY = startY;
-				this._radius = radius;
-				
-				this._dl = `M${startX},${startY} a${radius},${radius} 0`;
-			}
-			
-			_getNewCoord(percent) {
-				let theta = 2 * Math.PI * percent / 100, r = this._radius;
-				return {x: r * Math.sin(theta), y: r * (1 - Math.cos(theta))};
-			}
-			
-			drawArc(percent) {
-				percent = 100 - percent;
-				let dm;
-				let dr = (percent === 100 || percent === 0) ? '' : "L50,50 z";
-				if(percent <= 50) {
-					dm = '1,0';
-					if(percent === 0) percent = .01;
-				} else {
-					dm = '0,0 ';      
-				}
-
-				let coord = this._getNewCoord(percent);
-
-
-				this._element.setAttribute('d', `${this._dl} ${dm} ${coord.x},${coord.y} ${dr}`);
-			}
-			
-		}
-		
-		const sliderOut = document.getElementById('sliderOut');
-		const prgBar = document.getElementById('totalProgressBar');
-		
-		const arcMask = new ArcMask(document.getElementById('arcMask'));
-		
-		document.getElementById('maskRange').oninput = function() {
-			sliderOut.value = this.value;
-			arcMask.drawArc(this.value);
-			prgBar.value = this.value;
-		}
+		//- class ArcClip {
+		//- 	constructor(element, startX = 50, startY = 0, radius = 50) {
+		//- 		this._element = element;
+		//- 		this._startX = startX;
+		//- 		this._startY = startY;
+		//- 		this._radius = radius;
+		//- 		
+		//- 		this._dl = `M${startX},${startY} a${radius},${radius} 0`;
+		//- 	}
+		//- 	
+		//- 	_getNewCoord(percent) {
+		//- 		let theta = 2 * Math.PI * percent / 100, r = this._radius;
+		//- 		return {x: r * Math.sin(theta), y: r * (1 - Math.cos(theta))};
+		//- 	}
+		//- 	
+		//- 	drawArc(percent) {
+		//- 		percent = 100 - percent;
+		//- 		let dm;
+		//- 		let dr = (percent === 100 || percent === 0) ? '' : "L50,50 z";
+		//- 		if(percent <= 50) {
+		//- 			dm = '1,0';
+		//- 			if(percent === 0) percent = .01;
+		//- 		} else {
+		//- 			dm = '0,0 ';      
+		//- 		}
+		//- 
+		//- 		let coord = this._getNewCoord(percent);
+		//- 
+		//- 
+		//- 		this._element.setAttribute('d', `${this._dl} ${dm} ${coord.x},${coord.y} ${dr}`);
+		//- 	}
+		//- 	
+		//- }
+		//- 
+		//- const sliderOut = document.getElementById('sliderOut');
+		//- const prgBar = document.getElementById('totalProgressBar');
+		//- 
+		//- const arcClip = new ArcClip(document.getElementById('arcClip'));
+		//- 
+		//- document.getElementById('maskRange').addEventListener('input', function() {
+		//- 	sliderOut.value = this.value;
+		//- 	arcClip.drawArc(this.value);
+		//- 	prgBar.value = this.value;
+		//- });
 		
 		//######################################
 		$(document).ready(function() {

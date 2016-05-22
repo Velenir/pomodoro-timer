@@ -62,3 +62,6 @@ class EventfulClass {
 		this.dispatcher.emit(...args);
 	}
 }
+
+
+const eventDispatcher = new EventDispatcher();

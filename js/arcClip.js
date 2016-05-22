@@ -37,7 +37,6 @@
 	const arcClip = new ArcClip(document.getElementById('arcClip'));
 
 	eventDispatcher.on('percent-left', (percentLeft) => {
-		console.log('percent left', percentLeft);
 		arcClip.drawArc(percentLeft);
-	})
+	});
 })();

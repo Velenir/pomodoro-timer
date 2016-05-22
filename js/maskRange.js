@@ -7,6 +7,6 @@
 	const sliderOut = document.getElementById('sliderOut');
 	eventDispatcher.on('percent-left', (percentLeft) => {
 		sliderOut.value = percentLeft;
-	})
+	});
 
 })();

@@ -1,7 +1,7 @@
 (function () {
 
 	const checkVolume = document.getElementById("check-volume");
-	const checkClockSeconds = document.getElementById("check-seconds");
+	const checkClockSeconds = document.getElementById("check-clock-seconds");
 	const checkClockFilled = document.getElementById("check-clock-filled");
 	const checkProgress = document.getElementById("check-progress");
 
@@ -13,7 +13,7 @@
 	});
 
 	checkClockSeconds.addEventListener('change', function () {
-		eventDispatcher.emit('check-seconds:changed', this.checked);
+		eventDispatcher.emit('check-clock-seconds:changed', this.checked);
 	});
 
 	checkClockFilled.addEventListener('change', function () {

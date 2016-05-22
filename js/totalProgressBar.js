@@ -6,4 +6,8 @@
 		prgBar.value = 100 - percentLeft;
 	});
 
+	eventDispatcher.on('check-progress:changed', (on) => {
+		prgBar.classList.toggle('progress-off', !on);
+	});
+
 })();

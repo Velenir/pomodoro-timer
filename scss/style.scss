@@ -81,7 +81,7 @@ body {
 // 	border: 1px solid gray;
 // }
 
-.notification-control {
+.notificationControl {
 	border: 3px solid yellow;
 	border-radius: 20px;
 	padding: 0.5em 1em;
@@ -92,7 +92,7 @@ body {
 	background-color: #DC2C2C;
 	color: #E8D0D7;
 
-	ul {
+	> ul {
 		list-style: none;
 		padding-left: 1em;
 

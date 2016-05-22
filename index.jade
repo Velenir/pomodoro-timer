@@ -1,16 +1,15 @@
 extend partials/layout
 
 block content
-	.notification-control
+	.notificationControl
 		h3 Notify me when it's time
-		form#notify
-			ul
-				li: label
-					input#break(type="checkbox")
-					span for a break
-				li: label
-					input#work(type="checkbox")
-					span for work
+		ul
+			li: label
+				input#notify-break(type="checkbox")
+				span for a break
+			li: label
+				input#notify-work(type="checkbox")
+				span for work
 		
 	h1.headTitle Pomodoro timer
 	.controls

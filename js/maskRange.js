@@ -1,3 +1,5 @@
+// REMOVE file
+
 (function () {
 
 	document.getElementById('maskRange').addEventListener('input', function () {

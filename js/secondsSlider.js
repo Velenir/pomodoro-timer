@@ -1,3 +1,5 @@
+// REMOVE file
+
 (function () {
 
 	document.getElementById('secondsSlider').oninput = function () {

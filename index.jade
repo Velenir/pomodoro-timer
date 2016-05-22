@@ -19,7 +19,7 @@ block content
 			p.time 5
 			button.minus(type="button") -
 		.midPanel
-			each val in [{cls: "icon-volume", on: true}, {cls: "icon-clock-minutes", on: false}, {cls: "icon-clock-filled", on: true}, {cls: "icon-progress", on: false}]
+			each val in [{cls: "icon-volume", on: true}, {cls: "icon-clock-seconds", on: false}, {cls: "icon-clock-filled", on: true}, {cls: "icon-progress", on: false}]
 				label.icon(class=val.cls)
 					input(type="checkbox", id=val.cls.replace('icon', 'check'), checked=val.on)
 					span

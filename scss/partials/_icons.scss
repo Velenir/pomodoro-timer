@@ -1,7 +1,7 @@
 $icon-progress-empty: "\e906";
 $icon-progress-two: "\e907";
 $icon-clock: "\e903";
-$icon-clock-minutes: "\e902";
+$icon-clock-seconds: "\e902";
 $icon-volume_off: "\e904";
 $icon-volume_up: "\e905";
 $icon-clock-bold: "\e901";
@@ -41,8 +41,8 @@ span::before {
 		.icon-progress > & {
 			content: $icon-progress-two;
 		}
-		.icon-clock-minutes > & {
-			content: $icon-clock-minutes;
+		.icon-clock-seconds > & {
+			content: $icon-clock-seconds;
 		}
 		.icon-clock-filled > & {
 			content: $icon-clock-bold-filled;
@@ -56,7 +56,7 @@ span::before {
 		.icon-progress > & {
 			content: $icon-progress-empty;
 		}
-		.icon-clock-minutes > & {
+		.icon-clock-seconds > & {
 			content: $icon-clock;
 		}
 		.icon-clock-filled > & {

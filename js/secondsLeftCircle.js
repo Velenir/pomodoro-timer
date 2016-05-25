@@ -12,4 +12,11 @@
 
 	eventDispatcher.on('seconds-left', changeDashOffset);
 
+	const secondsLeftText = document.querySelector('.tomatoTimer > .seconds');
+
+	eventDispatcher.on('check-clock-seconds:changed', (on) => {
+		secondsLeftCircle.classList.toggle('visible', on);
+		secondsLeftText.classList.toggle('visible', on);
+	});
+
 })();

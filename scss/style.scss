@@ -30,15 +30,19 @@ $tomato-secondsleft-color: #A59C7D !default;
 @import url(https://fonts.googleapis.com/css?family=Pacifico|Open+Sans:300);
 
 .show {
-	display: unset;
+	display: unset !important;
 }
 
 .hidden {
-	display: none;
+	display: none !important;
+}
+
+.visible {
+	visibility: visible !important;
 }
 
 .invisible {
-	visibility: hidden;
+	visibility: hidden !important;
 }
 
 .transparent {

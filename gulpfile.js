@@ -6,6 +6,7 @@ const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
 const jade = require('gulp-jade');
 const concat = require('gulp-concat');
+const iife = require("gulp-iife");
 
 
 const src = {
@@ -58,6 +59,7 @@ gulp.task('jade', function() {
 gulp.task('javascript', function() {
 	return gulp.src(src.js)
 		.pipe(concat('bundle.js'))
+		.pipe(iife())
 		.pipe(gulp.dest(dist.js))
 		.pipe(browserSync.stream({once: true}));
 });

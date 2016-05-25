@@ -1,5 +1,4 @@
 //events - a super-basic Javascript (publish subscribe) pattern
-"use strict";
 
 class EventDispatcher {
 

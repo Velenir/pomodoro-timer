@@ -30,18 +30,20 @@ block content
 			p.time 5
 			button.minus(type="button") -
 	
-	- let clickhoverMask = "pointerEventClip"
+	- let clickhoverMaskId = "pointerEventClip"
 	//- for some reason Firefox ignores clip-path inside CSS
-	.tomatoTimer(style="clip-path: url(##{clickhoverMask}); -webkit-clip-path: circle(50% at 50% 50%);")
+	.tomatoTimer(style="clip-path: url(##{clickhoverMaskId}); -webkit-clip-path: circle(50% at 50% 50%);")
 		.svgSpace
 			svg(xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', viewBox='0 0 100 100', preserveAspectratio='none')
 				defs
-					clipPath#clipPath
-						path(id="arcClip", d="M50,0  a50,50 0 1,0 0.03141592446881286,0.000009869604078005523 z")
-					clippath(id=clickhoverMask, clipPathUnits="objectBoundingBox")
+					- let tomatoMaskId = "tomatoMask"
+					mask(id=tomatoMaskId)
+						circle(cx='50%', cy='50%', r='51%', fill="#844f4f")
+						path(id="arcMask", d="M50,0  a50,50 0 1,0 0.03141592446881286,0.000009869604078005523 z", fill="white" stroke="black")
+					clipPath(id=clickhoverMaskId, clipPathUnits="objectBoundingBox")
 						circle(cx='0.5', cy='0.5', r='0.51')
 				include partials/tomato
-				+tomato('clipPath')
+				+tomato(tomatoMaskId)
 				text#minutesSvg(x='50%', y='50%', dy="15%") 25
 				circle#secondsLeft(cx='50%', cy='50%', r="51%", transform='rotate(-90 50 50)')
 

@@ -1,6 +1,6 @@
 (function () {
 
-	class ArcClip {
+	class ArcMask {
 		constructor(element, startX = 50, startY = 0, radius = 50) {
 			this._element = element;
 			this._startX = startX;
@@ -34,9 +34,9 @@
 
 	}
 
-	const arcClip = new ArcClip(document.getElementById('arcClip'));
+	const arcMask = new ArcMask(document.getElementById('arcMask'));
 
 	eventDispatcher.on('percent-left', (percentLeft) => {
-		arcClip.drawArc(percentLeft);
+		arcMask.drawArc(percentLeft);
 	});
 })();

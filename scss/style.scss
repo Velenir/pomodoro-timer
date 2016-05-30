@@ -300,19 +300,26 @@ body {
 				stroke: $tomato-minutes-color;
 				stroke-width: .7;
 
+				transition: stroke-dashoffset 1s linear;
+
 				// Firefox specific numbers
 				@media screen and (min--moz-device-pixel-ratio: 0) {
 					stroke-dasharray: $f-stroke-dArr $f-stroke-dArr;
 				}
 
-				transition: stroke-dashoffset 1s linear;
 				&.changing {
 					stroke-dashoffset: $stroke-dArr;
-					transition: stroke-dashoffset 2s linear;
+					transition: stroke-dashoffset 2s linear !important;
 
 					@media screen and (min--moz-device-pixel-ratio: 0) {
 						stroke-dashoffset: $f-stroke-dArr;
 					}
+				}
+
+				// added dynamically to cancel a transition in progress
+				&.no-transition {
+					stroke-dashoffset: 0 !important;
+					transition: none !important;
 				}
 			}
 

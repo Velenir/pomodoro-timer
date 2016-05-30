@@ -9,21 +9,19 @@ minutesSvg.addEventListener('transitionend', function() {
 	this.classList.remove('changing');
 });
 
-function disableTransitionEffect(disable = true) {
-	minutesSvg.style.cssText = disable ? "stroke-dashoffset: 0; transition: none;" : "";
-}
-
 function changeMinuteSvg(hourAndMin) {
 	if(minutesSvgValue === hourAndMin) return;
 
-	disableTransitionEffect(false);
+	// turn transitions back on
+	minutesSvg.classList.remove('no-transition');
 
 	minutesSvgValue = hourAndMin;
 	minutesSvg.classList.add('changing');
 }
 
 function setImmediateMinuteSvg(hourAndMin) {
-	disableTransitionEffect();
+	// cancel transition in progress if any
+	minutesSvg.classList.add('no-transition');
 
 	minutesSvgValue = hourAndMin;
 	minutesSvg.textContent = hourAndMin;

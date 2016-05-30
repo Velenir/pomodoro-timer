@@ -59,7 +59,7 @@ gulp.task('jade', function() {
 gulp.task('javascript', function() {
 	return gulp.src(src.js)
 		.pipe(concat('bundle.js'))
-		.pipe(iife())
+		// .pipe(iife())
 		.pipe(gulp.dest(dist.js))
 		.pipe(browserSync.stream({once: true}));
 });

@@ -66,3 +66,22 @@ connectKeydown(workMinus, workDecrement);
 
 connectKeydown(breakPlus, breakIncrement);
 connectKeydown(breakPlus, breakDecrement);
+
+function disableBtn(disable, btnName) {	
+	if(btnName === "work") {
+		workPlus.disabled = disable;
+		workMinus.disabled = disable;
+	}else if (btnName === "break") {
+		breakPlus.disabled = disable;
+		breakMinus.disabled = disable;
+	}
+}
+
+
+eventDispatcher.on('timer:state-changed', ({currentState, session: {name: sessionName}}) => {
+	disableBtn(currentState === "active", sessionName);
+});
+eventDispatcher.on('timer:session-change', ({ended: {session: {name: endedSessionName}}, started: {session: {name: startedSessionName}}}) => {
+	disableBtn(true, endedSessionName);
+	disableBtn(false, startedSessionName);
+});

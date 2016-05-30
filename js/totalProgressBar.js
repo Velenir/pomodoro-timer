@@ -1,6 +1,7 @@
 const prgBar = document.getElementById('totalProgressBar');
 
-eventDispatcher.on('percent-left', (percentLeft) => {
+eventDispatcher.on('timer-display-percent-left', (percentLeft) => {
+	console.log("percentleft", percentLeft);
 	prgBar.value = 100 - percentLeft;
 });
 

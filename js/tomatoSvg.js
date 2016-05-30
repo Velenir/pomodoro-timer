@@ -1,3 +1,5 @@
+// .tomatTimer > .svgSpace .all-tomato
+
 const tomatoSvg = document.querySelector('.all-tomato');
 
 eventDispatcher.on('check-clock-filled:changed', (on) => {

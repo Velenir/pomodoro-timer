@@ -34,6 +34,7 @@ class ArcMask {
 
 const arcMask = new ArcMask(document.getElementById('arcMask'));
 
-eventDispatcher.on('percent-left', (percentLeft) => {
+eventDispatcher.on('timer-display-percent-left', (percentLeft) => {
+	console.log("percentleft", percentLeft);
 	arcMask.drawArc(percentLeft);
 });

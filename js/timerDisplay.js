@@ -53,11 +53,12 @@ eventDispatcher.on('seconds-left', (seconds) => {
 
 eventDispatcher.on('check-clock-seconds:changed', (on) => {
 	secondsLeftCircle.classList.toggle('visible', on);
-	secondsLeftText.classList.toggle('visible', on);
 });
 
 function setSecondsDisplay(seconds, lastMinute) {
 	changeCircleDashOffset(!lastMinute && seconds === 0 ? 60 : seconds);
+	// :01 format instead of :1
+	if(seconds < 10) seconds = "0" + seconds;
 	secondsLeftText.textContent = ":" + seconds;
 }
 
@@ -93,4 +94,16 @@ eventDispatcher.on('timer:session-in-progress', ({session: {left: seconds}}) => 
 	changeMinuteSvg(hAndMin);
 	console.log("setting hAndMin", hAndMin, ", sec", s);
 	setSecondsDisplay(s, m === 1);
+});
+
+
+// .tomatoTimer > .seconds and .tomatoTimer > .session
+
+const sessionText = document.querySelector('.tomatoTimer > .session');
+
+eventDispatcher.on('timer:state-changed', ({currentState, session: {name: sessionName}}) => {
+	sessionText.textContent = sessionName;
+
+	// don't show seconds intitially, but show as soon as something happens
+	secondsLeftText.classList.remove("invisible");
 });

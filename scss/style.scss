@@ -262,6 +262,7 @@ body {
 			letter-spacing: .1em;
 			font-family: monospace;
 			font-weight: bold;
+			text-transform: capitalize;
 		}
 
 		&.seconds {
@@ -271,11 +272,6 @@ body {
 			right: 0;
 			transform: translateX(-1.5%);
 			margin: 0;
-			visibility: hidden;
-
-			@at-root .tomatoTimer:hover .seconds {
-				visibility: visible;
-			}
 		}
 	}
 

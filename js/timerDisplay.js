@@ -21,6 +21,7 @@ function changeMinuteSvg(hourAndMin) {
 
 function setImmediateMinuteSvg(hourAndMin) {
 	// cancel transition in progress if any
+	minutesSvg.classList.remove('changing');
 	minutesSvg.classList.add('no-transition');
 
 	minutesSvgValue = hourAndMin;

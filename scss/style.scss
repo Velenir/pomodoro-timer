@@ -318,7 +318,6 @@ body {
 
 				// added dynamically to cancel a transition in progress
 				&.no-transition {
-					stroke-dashoffset: 0 !important;
 					transition: none !important;
 				}
 			}

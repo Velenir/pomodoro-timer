@@ -231,6 +231,8 @@ class Timer extends EventfulClass {
 	}
 
 	_resume() {
+		// first report current/starting progress
+		this.onSessionProgress();
 		this.intervalId = setInterval(this._decrement.bind(this), this._updateFrequency * 1000); //updateFrequency is in seconds
 	}
 
@@ -270,7 +272,11 @@ class Timer extends EventfulClass {
 			// if no next session for whatever reason
 			if(this._currentSession == null) this.stop();
 			// otherwise reset countdown
-			else this._resetCurrentSessionIfElapsed();
+			else {
+				this._resetCurrentSessionIfElapsed();
+				// first report current/starting progress
+				this.onSessionProgress();
+			}
 		}
 	}
 
@@ -318,8 +324,8 @@ class Timer extends EventfulClass {
 	}
 
 	onSessionChanged(ended) {
-		console.log('timer:session-change', ended.session.name, ended.index, "=>", this._currentSession.name, this._currentSessionIndex);
-		this.emit('timer:session-change', {ended, started: {session: this._currentSession, index: this._currentSessionIndex}});
+		console.log('timer:session-changed', ended.session.name, ended.index, "=>", this._currentSession.name, this._currentSessionIndex);
+		this.emit('timer:session-changed', {ended, started: {session: this._currentSession, index: this._currentSessionIndex}});
 	}
 
 	onSessionProgress() {

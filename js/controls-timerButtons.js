@@ -81,7 +81,7 @@ function disableBtn(disable, btnName) {
 eventDispatcher.on('timer:state-changed', ({currentState, session: {name: sessionName}}) => {
 	disableBtn(currentState === "active", sessionName);
 });
-eventDispatcher.on('timer:session-change', ({ended: {session: {name: endedSessionName}}, started: {session: {name: startedSessionName}}}) => {
+eventDispatcher.on('timer:session-changed', ({ended: {session: {name: endedSessionName}}, started: {session: {name: startedSessionName}}}) => {
 	disableBtn(false, endedSessionName);
 	disableBtn(true, startedSessionName);
 });

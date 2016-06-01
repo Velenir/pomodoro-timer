@@ -9,13 +9,21 @@ minutesSvg.addEventListener('transitionend', function() {
 	this.classList.remove('changing');
 });
 
-function changeMinuteSvg(hourAndMin) {
-	if(minutesSvgValue === hourAndMin) return;
+function changeMinuteSvg(h, m, hourAndMin, changeNow) {
+	// if(minutesSvgValue === hourAndMin) return;
+	if(!changeNow) return;
 
 	// turn transitions back on
 	minutesSvg.classList.remove('no-transition');
 
-	minutesSvgValue = hourAndMin;
+	// no transition when no minutes left (m-1===-1)
+	if(--m < 0) return;
+
+	const hAndMin = h >= 1 ? `${h}:${m}` : m;
+
+	// if(minutesSvgValue === hAndMin) return;
+
+	minutesSvgValue = hAndMin;
 	minutesSvg.classList.add('changing');
 }
 
@@ -85,13 +93,18 @@ eventDispatcher.on('timer:session-modified', ({modification: {valueName, newValu
 	setSecondsDisplay(s, m === 0);
 });
 
-eventDispatcher.on('timer:session-in-progress', ({session: {left: seconds}}) => {
+eventDispatcher.on('timer:session-in-progress', ({session: {left: seconds, len: secondsTotal}}) => {
 	console.log("received seconds", seconds);
 	const {h, m, s} = secondsToHMinSec(seconds);
 
 	const hAndMin = h >= 1 ? `${h}:${m}` : m;
 
-	changeMinuteSvg(hAndMin);
+	// if new session just started
+	// FIXME
+	if(seconds === secondsTotal) {
+		minutesSvg.textContent = minutesSvgValue = hAndMin;
+	}
+	changeMinuteSvg(h, m, hAndMin, s === 0);
 	console.log("setting hAndMin", hAndMin, ", sec", s);
 	setSecondsDisplay(s, m === 1);
 });
@@ -101,9 +114,33 @@ eventDispatcher.on('timer:session-in-progress', ({session: {left: seconds}}) => 
 
 const sessionText = document.querySelector('.tomatoTimer > .session');
 
-eventDispatcher.on('timer:state-changed', ({currentState, session: {name: sessionName}}) => {
+eventDispatcher.on('timer:session-changed', ({started: {session: {name: sessionName, len: seconds}}}) => {
 	sessionText.textContent = sessionName;
 
+	// const {h, m} = secondsToHMinSec(seconds);
+	// minutesSvg.textContent = minutesSvgValue = h >= 1 ? `${h}:${m}` : m;
+});
+
+
+const minutesSvgCss = window.getComputedStyle(minutesSvg);
+
+eventDispatcher.on('timer:state-changed', ({currentState, session: {name: sessionName, left: seconds}}) => {
 	// don't show seconds intitially, but show as soon as something happens
 	secondsLeftText.classList.remove("invisible");
+
+	// if timer was paused
+	if(currentState === "paused") {
+		const {h, m, s} = secondsToHMinSec(seconds);
+		console.log("time",{h,m,s});
+		// during transition (which happens at s=0) to next minutes value
+		if(s === 0) {
+			// set minutesSvg value post transition back to actual minutes value, since s is still 0
+			minutesSvgValue = h >= 1 ? `${h}:${m}` : m;
+
+			console.log("dashoffset", minutesSvgCss.strokeDashoffset);
+			// if
+			// if(minutesSvgCss.strokeDashoffset !== 0 && minutesSvg.classList.contains("changing")) minutesSvg.textContent = minutesSvg;
+			if(m !== 0 && h === 0) minutesSvg.textContent =  minutesSvgValue;
+		}
+	}
 });

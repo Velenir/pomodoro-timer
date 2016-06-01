@@ -48,9 +48,11 @@ const secondsLeftCircle = document.getElementById('secondsLeft');
 const r = parseInt(secondsLeftCircle.getAttribute("r"), 10);
 const fct = Math.round(r * 6.285714286)/100;
 
+// proper offset to draw 60 cells, 1 cell representing 1 second
 function changeCircleDashOffset(secondsLeft) {
-	let val = 100 - secondsLeft * 5 / 3;
-	secondsLeftCircle.style["stroke-dashoffset"] = -fct * val;
+	let dashoffset = 100 - secondsLeft * 5 / 3;
+	console.log("circle secs", secondsLeft, ", dashoffset", dashoffset);
+	secondsLeftCircle.style["stroke-dashoffset"] = -fct * dashoffset;
 }
 
 eventDispatcher.on('seconds-left', changeCircleDashOffset);
@@ -65,9 +67,9 @@ eventDispatcher.on('check-clock-seconds:changed', (on) => {
 	secondsLeftCircle.classList.toggle('visible', on);
 });
 
-function setSecondsDisplay(seconds, lastMinute) {
+function setSecondsDisplay(seconds) {
 	// show full circle for *min:00sec exvept for 0min:00sec
-	changeCircleDashOffset(!lastMinute && seconds === 0 ? 60 : seconds);
+	changeCircleDashOffset(seconds === 0 ? 60 : seconds);
 	// :01 format instead of :1
 	if(seconds < 10) seconds = "0" + seconds;
 	secondsLeftText.textContent = ":" + seconds;
@@ -91,7 +93,7 @@ eventDispatcher.on('timer:session-modified', ({modification: {valueName, newValu
 
 	setImmediateMinuteSvg(h, m);
 	console.log("setting hAndMin", h,m, ", sec", s);
-	setSecondsDisplay(s, m === 0);
+	setSecondsDisplay(s);
 });
 
 eventDispatcher.on('timer:session-in-progress', ({session: {left: seconds, len: secondsTotal}}) => {
@@ -100,7 +102,7 @@ eventDispatcher.on('timer:session-in-progress', ({session: {left: seconds, len: 
 
 	changeMinuteSvg(h, m, s === 0, seconds === secondsTotal);
 	console.log("setting hAndMin", h,m, ", sec", s);
-	setSecondsDisplay(s, m === 1);
+	setSecondsDisplay(s);
 });
 
 

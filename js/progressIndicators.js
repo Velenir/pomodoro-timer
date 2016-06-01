@@ -32,9 +32,35 @@ class ArcMask {
 
 }
 
+// .svgSpace mask > path#arcMask
+
 const arcMask = new ArcMask(document.getElementById('arcMask'));
 
 eventDispatcher.on('timer-display-percent-left', (percentLeft) => {
 	console.log("percentleft", percentLeft);
 	arcMask.drawArc(percentLeft);
+});
+
+
+// .progress > progress#totalProgressBar
+
+const prgBar = document.getElementById('totalProgressBar');
+
+eventDispatcher.on('timer-display-percent-left', (percentLeft) => {
+	console.log("percentleft", percentLeft);
+	prgBar.value = 100 - percentLeft;
+});
+
+eventDispatcher.on('check-progress:changed', (on) => {
+	prgBar.classList.toggle('progress-off', !on);
+});
+
+
+// .svgSpace mask > path#arcMask, .progress > progress#totalProgressBar
+
+eventDispatcher.on('timer:session-in-progress', ({session: {name, left: secondsLeft, len: secondsTotal}}) => {
+	let percentLeft = Math.round(secondsLeft / secondsTotal * 100);
+	console.log("percent left", percentLeft);
+	arcMask.drawArc(percentLeft);
+	prgBar.value = 100 - percentLeft;
 });

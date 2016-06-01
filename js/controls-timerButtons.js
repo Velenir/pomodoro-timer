@@ -36,6 +36,7 @@ function repeatFunction(repeatF, freq = 200) {
 function connectButtonOnOff(btn, {start, stop}) {
 	btn.addEventListener('mousedown', start);
 	btn.addEventListener('mouseup', stop);
+	btn.addEventListener('mouseleave', stop);
 }
 
 const workIncrementRepeat = repeatFunction(workIncrement);
@@ -71,9 +72,18 @@ function disableBtn(disable, btnName) {
 	if(btnName === "work") {
 		workPlus.disabled = disable;
 		workMinus.disabled = disable;
+
+		// stop incr/decrementing if in progress
+		workIncrementRepeat.stop();
+		workDecrementRepeat.stop();
+
 	}else if (btnName === "break") {
 		breakPlus.disabled = disable;
 		breakMinus.disabled = disable;
+
+		// stop incr/decrementing if in progress
+		breakIncrementRepeat.stop();
+		breakDecrementRepeat.stop();
 	}
 }
 

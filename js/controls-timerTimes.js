@@ -21,14 +21,14 @@ function emitControlTimerChange(timer, val) {
 }
 
 eventDispatcher.on('work-timer:++', () => {
-	let newVal = parseInt(workTime.textContent, 10) + 1;
+	const newVal = parseInt(workTime.textContent, 10) + 1;
 	if(!validTime(newVal)) return;
 	workTime.textContent = newVal;
 
 	emitControlTimerChange("work", newVal);
 });
 eventDispatcher.on('work-timer:--', () => {
-	let newVal = parseInt(workTime.textContent, 10) - 1;
+	const newVal = parseInt(workTime.textContent, 10) - 1;
 	if(!validTime(newVal)) return;
 	workTime.textContent = newVal;
 
@@ -36,14 +36,14 @@ eventDispatcher.on('work-timer:--', () => {
 });
 
 eventDispatcher.on('break-timer:++', () => {
-	let newVal = parseInt(breakTime.textContent, 10) + 1;
+	const newVal = parseInt(breakTime.textContent, 10) + 1;
 	if(!validTime(newVal)) return;
 	breakTime.textContent = newVal;
 
 	emitControlTimerChange("break", newVal);
 });
 eventDispatcher.on('break-timer:--', () => {
-	let newVal = parseInt(breakTime.textContent, 10) - 1;
+	const newVal = parseInt(breakTime.textContent, 10) - 1;
 	if(!validTime(newVal)) return;
 	breakTime.textContent = newVal;
 

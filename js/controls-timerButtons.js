@@ -14,6 +14,7 @@ function workDecrement() {
 }
 
 function breakIncrement() {
+	console.log("breakincr");
 	eventDispatcher.emit('break-timer:++');
 }
 function breakDecrement() {
@@ -66,7 +67,7 @@ connectKeydown(workPlus, workIncrement);
 connectKeydown(workMinus, workDecrement);
 
 connectKeydown(breakPlus, breakIncrement);
-connectKeydown(breakPlus, breakDecrement);
+connectKeydown(breakMinus, breakDecrement);
 
 function disableBtn(disable, btnName) {
 	if(btnName === "work") {

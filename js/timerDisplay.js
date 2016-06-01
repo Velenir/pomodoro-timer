@@ -9,31 +9,33 @@ minutesSvg.addEventListener('transitionend', function() {
 	this.classList.remove('changing');
 });
 
-function changeMinuteSvg(h, m, hourAndMin, changeNow) {
-	// if(minutesSvgValue === hourAndMin) return;
-	if(!changeNow) return;
-
-	// turn transitions back on
-	minutesSvg.classList.remove('no-transition');
-
-	// no transition when no minutes left (m-1===-1)
-	if(--m < 0) return;
+function changeMinuteSvg(h, m, changeNow, newSessionStarted) {
 
 	const hAndMin = h >= 1 ? `${h}:${m}` : m;
 
-	// if(minutesSvgValue === hAndMin) return;
+	if(minutesSvgValue !== hAndMin) {
+		minutesSvgValue = hAndMin;
+	}
 
-	minutesSvgValue = hAndMin;
-	minutesSvg.classList.add('changing');
+	if(newSessionStarted) {
+		minutesSvg.textContent = minutesSvgValue;
+	}
+
+	if(changeNow) {
+		// turn transitions back on
+		minutesSvg.classList.remove('no-transition');
+		minutesSvg.classList.add('changing');
+	}
 }
 
-function setImmediateMinuteSvg(hourAndMin) {
+function setImmediateMinuteSvg(h, m) {
+	const hAndMin = h >= 1 ? `${h}:${m}` : m;
 	// cancel transition in progress if any
 	minutesSvg.classList.remove('changing');
 	minutesSvg.classList.add('no-transition');
 
-	minutesSvgValue = hourAndMin;
-	minutesSvg.textContent = hourAndMin;
+	minutesSvgValue = hAndMin;
+	minutesSvg.textContent = hAndMin;
 }
 
 eventDispatcher.on('minutes-left', changeMinuteSvg);
@@ -64,6 +66,7 @@ eventDispatcher.on('check-clock-seconds:changed', (on) => {
 });
 
 function setSecondsDisplay(seconds, lastMinute) {
+	// show full circle for *min:00sec exvept for 0min:00sec
 	changeCircleDashOffset(!lastMinute && seconds === 0 ? 60 : seconds);
 	// :01 format instead of :1
 	if(seconds < 10) seconds = "0" + seconds;
@@ -86,10 +89,8 @@ eventDispatcher.on('timer:session-modified', ({modification: {valueName, newValu
 	if(valueName !== "len" || !isCurrentSession) return;
 	const {h, m, s} = secondsToHMinSec(seconds);
 
-	const hAndMin = h >= 1 ? `${h}:${m}` : m;
-
-	setImmediateMinuteSvg(hAndMin);
-	console.log("setting hAndMin", hAndMin, ", sec", s);
+	setImmediateMinuteSvg(h, m);
+	console.log("setting hAndMin", h,m, ", sec", s);
 	setSecondsDisplay(s, m === 0);
 });
 
@@ -97,15 +98,8 @@ eventDispatcher.on('timer:session-in-progress', ({session: {left: seconds, len: 
 	console.log("received seconds", seconds);
 	const {h, m, s} = secondsToHMinSec(seconds);
 
-	const hAndMin = h >= 1 ? `${h}:${m}` : m;
-
-	// if new session just started
-	// FIXME
-	if(seconds === secondsTotal) {
-		minutesSvg.textContent = minutesSvgValue = hAndMin;
-	}
-	changeMinuteSvg(h, m, hAndMin, s === 0);
-	console.log("setting hAndMin", hAndMin, ", sec", s);
+	changeMinuteSvg(h, m, s === 0, seconds === secondsTotal);
+	console.log("setting hAndMin", h,m, ", sec", s);
 	setSecondsDisplay(s, m === 1);
 });
 
@@ -116,31 +110,4 @@ const sessionText = document.querySelector('.tomatoTimer > .session');
 
 eventDispatcher.on('timer:session-changed', ({started: {session: {name: sessionName, len: seconds}}}) => {
 	sessionText.textContent = sessionName;
-
-	// const {h, m} = secondsToHMinSec(seconds);
-	// minutesSvg.textContent = minutesSvgValue = h >= 1 ? `${h}:${m}` : m;
-});
-
-
-const minutesSvgCss = window.getComputedStyle(minutesSvg);
-
-eventDispatcher.on('timer:state-changed', ({currentState, session: {name: sessionName, left: seconds}}) => {
-	// don't show seconds intitially, but show as soon as something happens
-	secondsLeftText.classList.remove("invisible");
-
-	// if timer was paused
-	if(currentState === "paused") {
-		const {h, m, s} = secondsToHMinSec(seconds);
-		console.log("time",{h,m,s});
-		// during transition (which happens at s=0) to next minutes value
-		if(s === 0) {
-			// set minutesSvg value post transition back to actual minutes value, since s is still 0
-			minutesSvgValue = h >= 1 ? `${h}:${m}` : m;
-
-			console.log("dashoffset", minutesSvgCss.strokeDashoffset);
-			// if
-			// if(minutesSvgCss.strokeDashoffset !== 0 && minutesSvg.classList.contains("changing")) minutesSvg.textContent = minutesSvg;
-			if(m !== 0 && h === 0) minutesSvg.textContent =  minutesSvgValue;
-		}
-	}
 });

@@ -64,3 +64,11 @@ eventDispatcher.on('timer:session-in-progress', ({session: {name, left: secondsL
 	arcMask.drawArc(percentLeft);
 	prgBar.value = 100 - percentLeft;
 });
+
+eventDispatcher.on('timer:session-modified', ({modification: {valueName, newValue: seconds}, isCurrentSession}) => {
+	// reset progress indicators when session is modified by the user
+	if(valueName === "len" && isCurrentSession) {
+		arcMask.drawArc(100);
+		prgBar.value = 0;
+	}
+});

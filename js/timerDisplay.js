@@ -11,7 +11,7 @@ minutesSvg.addEventListener('transitionend', function() {
 
 function changeMinuteSvg(h, m, changeNow, newSessionStarted) {
 
-	const hAndMin = h >= 1 ? `${h}:${m}` : m;
+	const hAndMin = h >= 1 ? `${h}:${m<10 ? "0"+m : m}` : m;
 
 	if(minutesSvgValue !== hAndMin) {
 		minutesSvgValue = hAndMin;
@@ -29,7 +29,7 @@ function changeMinuteSvg(h, m, changeNow, newSessionStarted) {
 }
 
 function setImmediateMinuteSvg(h, m) {
-	const hAndMin = h >= 1 ? `${h}:${m}` : m;
+	const hAndMin = h >= 1 ? `${h}:${m<10 ? "0"+m : m}` : m;
 	// cancel transition in progress if any
 	minutesSvg.classList.remove('changing');
 	minutesSvg.classList.add('no-transition');

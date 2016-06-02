@@ -20,10 +20,12 @@ function changeMinuteSvg(h, m, changeNow, newSessionStarted) {
 	if(newSessionStarted) {
 		minutesSvg.textContent = minutesSvgValue;
 	}
+	console.log("changeNow", changeNow);
 
 	if(changeNow) {
 		// turn transitions back on
 		minutesSvg.classList.remove('no-transition');
+		// start transition
 		minutesSvg.classList.add('changing');
 	}
 }
@@ -64,7 +66,7 @@ eventDispatcher.on('seconds-left', (seconds) => {
 });
 
 eventDispatcher.on('check-clock-seconds:changed', (on) => {
-	secondsLeftCircle.classList.toggle('visible', on);
+	secondsLeftCircle.classList.toggle('invisible', !on);
 });
 
 function setSecondsDisplay(seconds) {
@@ -96,7 +98,7 @@ eventDispatcher.on('timer:session-modified', ({modification: {valueName, newValu
 	setSecondsDisplay(s);
 });
 
-eventDispatcher.on('timer:session-in-progress', ({session: {left: seconds, len: secondsTotal}}) => {
+eventDispatcher.on('timer:session-in-progress', ({session: {name, left: seconds, len: secondsTotal}}) => {
 	console.log("received seconds", seconds);
 	const {h, m, s} = secondsToHMinSec(seconds);
 
@@ -112,4 +114,13 @@ const sessionText = document.querySelector('.tomatoTimer > .session');
 
 eventDispatcher.on('timer:session-changed', ({started: {session: {name: sessionName, len: seconds}}}) => {
 	sessionText.textContent = sessionName;
+});
+
+eventDispatcher.on('timer:state-changed', ({currentState, reason}) => {
+	if(currentState === "paused" && reason === "paused-on-start") {
+		console.log("paused-on-start");
+		// cancel transition in progress if any
+		minutesSvg.classList.remove('changing');
+		minutesSvg.classList.add('no-transition');
+	}
 });

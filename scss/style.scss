@@ -89,25 +89,49 @@ body {
 // 	border: 1px solid gray;
 // }
 
-.notificationControl {
-	border: 3px solid yellow;
-	border-radius: 20px;
-	padding: 0.5em 1em;
-	align-self: flex-start;
-	text-shadow: 0.5px 0.5px gray;
-	box-shadow: raisedshadow(3, 0.7);
-	margin: 10px 0 0 10px;
-	background-color: #DC2C2C;
-	color: #E8D0D7;
+.globalSettings {
+	width: 100%;
+	> div {
+		border: 3px solid yellow;
+		border-radius: 20px;
+		padding: 0.5em 1em;
+		// align-self: flex-start;
+		text-shadow: 0.5px 0.5px gray;
+		margin: 10px 10px 0;
+		background-color: #DC2C2C;
+		color: #E8D0D7;
 
-	> ul {
-		list-style: none;
-		padding-left: 1em;
+		&:first-child {
+			box-shadow: raisedshadow(3, 0.7);
+			float: left;
+		}
 
-		span {
-			color: inherit;
+		&:last-child {
+			box-shadow: raisedshadow(-3, 0.7);
+			float: right;
+		}
+
+		> ul {
+			list-style: none;
+			padding-left: 1em;
+
+			span {
+				color: inherit;
+			}
 		}
 	}
+}
+
+.notificationControl {
+	// border: 3px solid yellow;
+	// border-radius: 20px;
+	// padding: 0.5em 1em;
+	// align-self: flex-start;
+	// text-shadow: 0.5px 0.5px gray;
+	box-shadow: raisedshadow(3, 0.7);
+	// margin: 10px 0 0 10px;
+	// background-color: #DC2C2C;
+	// color: #E8D0D7;
 }
 
 .controls {
@@ -133,7 +157,8 @@ body {
 
 	.midPanel {
 		align-self: center;
-		> label {
+
+		label {
 			margin: 0 2px;
 			// otherwise moves .midPanel when child is transltedY(*px)
 			vertical-align: -1em;
@@ -253,28 +278,28 @@ body {
 		text-align: center;
 		font-size: $tomato-font-size;
 		color: $tomato-text-color;
-
-		&.session {
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			letter-spacing: .1em;
-			font-family: monospace;
-			font-weight: bold;
-			text-transform: capitalize;
-		}
-
-		&.seconds {
-			position: absolute;
-			bottom: 5%;
-			left: 0;
-			right: 0;
-			transform: translateX(-1.5%);
-			margin: 0;
-		}
 	}
 
+	.session {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		letter-spacing: .1em;
+		font-family: monospace;
+		font-weight: bold;
+		text-transform: capitalize;
+	}
+
+	.seconds {
+		position: absolute;
+		bottom: 5%;
+		left: 0;
+		right: 0;
+		transform: translateX(-1.5%);
+		margin: 0;
+	}
+	
 	> .svgSpace {
 		> svg {
 			overflow: visible;
@@ -325,7 +350,7 @@ body {
 				stroke: $tomato-secondsleft-color;
 				stroke-width: 2;
 				fill: none;
-				visibility: hidden;
+				// visibility: hidden;
 
 				@at-root .tomatoTimer:hover .svgSpace svg > #secondsLeft {
 					visibility: visible;

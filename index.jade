@@ -1,15 +1,27 @@
 extend partials/layout
 
 block content
-	.notificationControl
-		h3 Notify me when it's time
-		ul
-			li: label
-				input#notify-break(type="checkbox")
-				span for a break
-			li: label
-				input#notify-work(type="checkbox")
-				span for work
+	.globalSettings
+		.notificationControl
+			h3 Notify me when it's time
+			ul
+				li: label
+					input#notify-break(type="checkbox")
+					span for a break
+				li: label
+					input#notify-work(type="checkbox")
+					span for work
+				
+		.pauseControls
+			h3 Pause after
+			ul
+				li: label
+					input#pause-on-break-start(type="checkbox")
+					span work session
+				li: label
+					input#pause-on-work-start(type="checkbox")
+					span break session
+					
 		
 	h1.headTitle Pomodoro timer
 	.controls
@@ -19,7 +31,7 @@ block content
 			p.time 25
 			button.minus(type="button") -
 		.midPanel
-			each val in [{cls: "icon-volume", on: true}, {cls: "icon-clock-seconds", on: false}, {cls: "icon-clock-filled", on: true}, {cls: "icon-progress", on: false}]
+			each val in [{cls: "icon-volume", on: true}, {cls: "icon-clock-seconds", on: true}, {cls: "icon-clock-filled", on: true}, {cls: "icon-progress", on: false}]
 				label.icon(class=val.cls)
 					input(type="checkbox", id=val.cls.replace('icon', 'check'), checked=val.on)
 					span

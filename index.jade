@@ -31,7 +31,7 @@ block content
 			p.time 25
 			button.minus(type="button") -
 		.midPanel
-			each val in [{cls: "icon-volume", on: true}, {cls: "icon-clock-seconds", on: true}, {cls: "icon-clock-filled", on: true}, {cls: "icon-progress", on: false}]
+			each val in [{cls: "icon-volume", on: true}, {cls: "icon-clock-seconds", on: false}, {cls: "icon-clock-filled", on: true}, {cls: "icon-progress", on: false}]
 				label.icon(class=val.cls)
 					input(type="checkbox", id=val.cls.replace('icon', 'check'), checked=val.on)
 					span
@@ -57,7 +57,7 @@ block content
 				include partials/tomato
 				+tomato("all-tomato", tomatoMaskId)
 				text#minutesSvg(x='50%', y='50%', dy="15%") 25
-				circle#secondsLeft(cx='50%', cy='50%', r="51%", transform='rotate(-90 50 50)')
+				circle#secondsLeft.invisible(cx='50%', cy='50%', r="51%", transform='rotate(-90 50 50)')
 
 		.session
 			p#sessionName Session

@@ -279,6 +279,10 @@ body {
 		transition: box-shadow .5s, transform .5s;
 	}
 
+	* {
+		user-select: none;
+	}
+
 	p {
 		text-align: center;
 		font-size: $tomato-font-size;
@@ -365,9 +369,10 @@ body {
 				fill: none;
 				// visibility: hidden;
 
-				@at-root .tomatoTimer:hover .svgSpace svg > #secondsLeft {
-					visibility: visible;
-				}
+				// CONSIDER not using
+				// @at-root .tomatoTimer:hover .svgSpace svg > #secondsLeft {
+				// 	visibility: visible !important;
+				// }
 			}
 		}
 	}

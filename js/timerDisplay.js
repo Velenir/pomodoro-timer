@@ -59,7 +59,7 @@ function changeCircleDashOffset(secondsLeft) {
 
 eventDispatcher.on('seconds-left', changeCircleDashOffset);
 
-const secondsLeftText = document.querySelector('.tomatoTimer > .seconds');
+const secondsLeftText = document.getElementById('secondsLeftText');
 
 eventDispatcher.on('seconds-left', (seconds) => {
 	secondsLeftText.textContent = seconds;
@@ -110,17 +110,23 @@ eventDispatcher.on('timer:session-in-progress', ({session: {name, left: seconds,
 
 // .tomatoTimer > .seconds and .tomatoTimer > .session
 
-const sessionText = document.querySelector('.tomatoTimer > .session');
+const sessionText = document.getElementById('sessionName');
 
 eventDispatcher.on('timer:session-changed', ({started: {session: {name: sessionName, len: seconds}}}) => {
 	sessionText.textContent = sessionName;
 });
 
+const pausedStateText = document.getElementById('pausedState');
+
 eventDispatcher.on('timer:state-changed', ({currentState, reason}) => {
-	if(currentState === "paused" && reason === "paused-on-start") {
+	const paused = currentState === "paused";
+
+	if(paused && reason === "paused-on-start") {
 		console.log("paused-on-start");
 		// cancel transition in progress if any
 		minutesSvg.classList.remove('changing');
 		minutesSvg.classList.add('no-transition');
 	}
+
+	pausedStateText.classList.toggle("hidden", !paused);
 });

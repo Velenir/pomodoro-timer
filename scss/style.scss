@@ -289,6 +289,14 @@ body {
 		font-family: monospace;
 		font-weight: bold;
 		text-transform: capitalize;
+
+		> p:first-child {
+			margin-bottom: 0;
+		}
+
+		> p:last-child {
+			margin-top: 0;
+		}
 	}
 
 	.seconds {
@@ -299,7 +307,7 @@ body {
 		transform: translateX(-1.5%);
 		margin: 0;
 	}
-	
+
 	> .svgSpace {
 		> svg {
 			overflow: visible;

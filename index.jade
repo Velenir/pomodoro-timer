@@ -59,8 +59,10 @@ block content
 				text#minutesSvg(x='50%', y='50%', dy="15%") 25
 				circle#secondsLeft(cx='50%', cy='50%', r="51%", transform='rotate(-90 50 50)')
 
-		p.session Session
-		p.seconds
+		.session
+			p#sessionName Session
+			p#pausedState.hidden ▌▌
+		p.seconds#secondsLeftText
 
 	.progress
 		progress#totalProgressBar.red.meter-animated.progress-off(value="0", max="100")

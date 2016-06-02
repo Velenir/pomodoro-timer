@@ -8,6 +8,11 @@ button::-moz-focus-inner {
 
 button {
 	cursor: pointer;
+
+	&:disabled {
+		cursor: not-allowed;
+		color: #808080;
+	}
 }
 
 @import "partials/checkboxes";
@@ -206,7 +211,7 @@ body {
 
 		@extend %uniform-btn-border;
 
-		&:active, &:active:focus {
+		&:active:not(:disabled), &:active:focus:not(:disabled) {
 			box-shadow: none;
 			border: 1px solid gray;
 		}
@@ -216,7 +221,7 @@ body {
 		@extend %button;
 		border-radius: 50% 50% 0 0;
 		box-shadow: raisedshadow();
-		&:active {
+		&:active:not(:disabled) {
 			transform: translateY(4px);
 		}
 	}
@@ -225,7 +230,7 @@ body {
 		@extend %button;
 		border-radius: 0 0 50% 50%;
 		box-shadow: raisedshadow($yFactor: -1);
-		&:active {
+		&:active:not(:disabled) {
 			transform: translateY(-4px);
 		}
 	}

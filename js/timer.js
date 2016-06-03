@@ -7,25 +7,27 @@
 	* @param eventDispatcher	an instance of EventDispatcher class, will be ceated if no existing EventDispatcher is passed
 	* @param pauseOnSessionStart	whether to pause when changing to a new session (right after onSessionProgress is fired, left === len)
 	* @param pauseOnSessionEnd	whether to pause when currentSession has elapsed (right after onSessionProgress is fired, left === 0)
+	* @param reversed	go through sessions array in reverse
  * @param  sessions array of {name: 'work', len: 25}
 	* @param name	name of the session
 	* @param len	length of the session in seconds
  */
 class Timer extends EventfulClass {
 	// default values in destructuring assignments don't work in Firefox yet
-	// constructor({updateFrequency = 1, loop = true, pauseOnSessionStart: false, pauseOnSessionEnd: false, eventDispatcher = new EventDispatcher()}, ...sessions)
+	// constructor({updateFrequency = 1, loop = true, pauseOnSessionStart: false, pauseOnSessionEnd: false, reversed: false, eventDispatcher = new EventDispatcher()}, ...sessions)
 	constructor(options, ...sessions) {
 		super(options.eventDispatcher);
 
-		const defaultOptions = {updateFrequency: 1, loop: true, pauseOnSessionStart: false, pauseOnSessionEnd: false};
-		({updateFrequency: this._updateFrequency, loop: this._loop, pauseOnSessionStart: this._pauseOnSessionStart, pauseOnSessionEnd: this._pauseOnSessionEnd} = Object.assign({}, defaultOptions, options));
+		const defaultOptions = {updateFrequency: 1, loop: true, pauseOnSessionStart: false, pauseOnSessionEnd: false, reversed: false};
+		({updateFrequency: this._updateFrequency, loop: this._loop, pauseOnSessionStart: this._pauseOnSessionStart, pauseOnSessionEnd: this._pauseOnSessionEnd, reversed: this._reversed} = Object.assign({}, defaultOptions, options));
 
 		this._state = "idle";
 
 		// session = {name: 'break', len: 5[seconds] [, skip: false, pauseOnStart: false, pauseOnEnd: false]}
 		this._sessions = sessions;
-		this._currentSession = sessions[0];
-		this._currentSessionIndex = 0;
+		const startIndex = this._reversed ? this._sessions.length - 1 : 0;
+		this._currentSession = sessions[startIndex];
+		this._currentSessionIndex = startIndex;
 
 		this._sessionsByName = {};
 
@@ -37,6 +39,22 @@ class Timer extends EventfulClass {
 
 	get sessions() {
 		return this._sessions;
+	}
+
+	set sessions(sessions) {
+		// remove references to current sessions
+		this._sessionsByName = {};
+		this._sessions = sessions;
+		for(let session of sessions) {
+			Timer.checkTimeValidity(session.len);
+			this._sessionsByName[session.name] = session;
+		}
+
+		// reset progress and order
+		this._pause();
+		this.reset();
+
+		this.onSessionModified(sessions, {valueName: "new-sessions"});
 	}
 
 	isIdle() {
@@ -57,14 +75,15 @@ class Timer extends EventfulClass {
 		this._sessionsByName[session.name] = session;
 
 		// hotswap sessions if adding in place of currentSession
-		if(this._currentSessionIndex === index) {
+		const isCurrentSession = this._currentSessionIndex === index;
+		if(isCurrentSession) {
 			this._currentSession = session;
 
 			// if countdown is in progress or paused, reset .left on the new session unless already provided
 			if(this.isActive() || this.isPaused()) this._resetCurrentSessionIfElapsed();
 		}
 
-		this.onSessionModified(session, {valueName: "new-session"});
+		this.onSessionModified(session, {valueName: "new-session"}, isCurrentSession);
 	}
 
 	get state() {
@@ -72,7 +91,7 @@ class Timer extends EventfulClass {
 	}
 
 	getElapsedSessions() {
-		return this.sessions.filter((session) => {return session.left === 0;});
+		return this._sessions.filter((session) => {return session.left === 0;});
 	}
 
 	getSession(name) {
@@ -84,15 +103,15 @@ class Timer extends EventfulClass {
 		// no session return -1 index
 		if(!session) return -1;
 
-		return this.sessions.indexOf(session);
+		return this._sessions.indexOf(session);
 	}
 
 	getSessionByIndex(index) {
-		return this.sessions[index];
+		return this._sessions[index];
 	}
 
 	get sessionsCount() {
-		return this.sessions.length;
+		return this._sessions.length;
 	}
 
 	get currentSession() {
@@ -164,6 +183,17 @@ class Timer extends EventfulClass {
 	set loop(loop) {
 		const modification = {valueName: "loop", oldValue: this._loop, newValue: loop};
 		this._loop = loop;
+
+		this.onOptionsModified(modification);
+	}
+
+	get reversed() {
+		return this._reversed;
+	}
+
+	set reversed(reversed) {
+		const modification = {valueName: "reversed", oldValue: this._reversed, newValue: reversed};
+		this._reversed = reversed;
 
 		this.onOptionsModified(modification);
 	}
@@ -246,7 +276,7 @@ class Timer extends EventfulClass {
 		if(!session) return;
 
 		this._currentSession = session;
-		this._currentSessionIndex = this.sessions.indexOf(session);
+		this._currentSessionIndex = this._sessions.indexOf(session);
 		this.resetCurrentSession();
 		this.resume(reason);
 	}
@@ -273,6 +303,9 @@ class Timer extends EventfulClass {
 	}
 
 	resume(reason = "called-from-without") {
+		// if session is null (when all sessions elapsed and loop === false)
+		if(!this._currentSession) return;
+
 		const prevState = this._state;
 		this._resume();
 		this._state = "active";
@@ -292,11 +325,14 @@ class Timer extends EventfulClass {
 	}
 
 	resetOrder() {
-		this._currentSession = this.sessions[0];
-		this._currentSessionIndex = 0;
+		const startIndex = this._reversed ? this._sessions.length - 1 : 0;
+		this._currentSession = this._sessions[startIndex];
+		this._currentSessionIndex = startIndex;
 	}
 
 	resetCurrentSession() {
+		// don't manipulate a null session
+		if(!this._currentSession) return;
 		this._currentSession.left = this._currentSession.len;
 	}
 
@@ -308,7 +344,7 @@ class Timer extends EventfulClass {
 
 	_decrement() {
 		// if starting with no seconds left, which can happen if session was paused-on-end
-		if(this._currentSession.left <= 0) this.sessionTransition();
+		if(this._currentSession.left <= 0) this._sessionTransition();
 
 		this._currentSession.left -= this._updateFrequency;
 		console.log("left", this._currentSession.left, ", freq", this._updateFrequency);
@@ -322,15 +358,15 @@ class Timer extends EventfulClass {
 		if(this._currentSession.left === 0) {
 			// pause if required to at the end of session in progress
 			if(this._pauseOnEndIfRequired()) return;
-			this.sessionTransition();
+			this._sessionTransition();
 		}
 	}
 
-	sessionTransition() {
+	_sessionTransition() {
 		this.goToNextSession();
 
 		// if no next session for whatever reason
-		if(this._currentSession == null) this.stop("reached-last-session-end");
+		if(this._currentSession == null) this.stop("no-next-session");
 		// otherwise reset countdown
 		else {
 			this._resetCurrentSessionIfElapsed();
@@ -354,10 +390,10 @@ class Timer extends EventfulClass {
 
 		// look for the next non-skipped session in order of this.session
 		do {
-			++nextSessionIndex;
+			this._reversed ? --nextSessionIndex : ++nextSessionIndex;
 			// reached last session, loop to start
-			if(nextSessionIndex === this.sessions.length) {
-				nextSessionIndex = 0;
+			if(nextSessionIndex === this._sessions.length || nextSessionIndex === -1) {
+				nextSessionIndex = this._reversed ? this._sessions.length - 1 : 0;
 
 				// unless loop option is false
 				if(!this._loop) {
@@ -368,12 +404,12 @@ class Timer extends EventfulClass {
 
 			// looped already to where started, no available sessions found
 			if(nextSessionIndex === this._currentSessionIndex) {
-				nextSessionIndex = 0;
+				nextSessionIndex = this._reversed ? this._sessions.length - 1 : 0;
 				nextSession = null;
 				break;
 			}
 
-			nextSession = this.sessions[nextSessionIndex];
+			nextSession = this._sessions[nextSessionIndex];
 		} while(nextSession.skip);
 
 		return {index: nextSessionIndex, session: nextSession};

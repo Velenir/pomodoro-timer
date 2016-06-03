@@ -31,10 +31,12 @@ block content
 			p.time 25
 			button.minus(type="button") -
 		.midPanel
-			each val in [{cls: "icon-volume", on: true}, {cls: "icon-clock-seconds", on: false}, {cls: "icon-clock-filled", on: true}, {cls: "icon-progress", on: false}]
-				label.icon(class=val.cls)
+			each val in [{cls: "icon-volume", on: true, tooltip: "Sound on session end"}, {cls: "icon-clock-seconds", on: false, tooltip: "Display seconds perimeter"}, {cls: "icon-clock-filled", on: true, tooltip: "Display tomato"}, {cls: "icon-progress", on: false, tooltip: "Display progressbar"}]
+				label.icon(class=val.cls, title=val.tooltip)
 					input(type="checkbox", id=val.cls.replace('icon', 'check'), checked=val.on)
 					span
+		button#skipSession.midButton(type="button", title="Skip session") »
+			
 				
 		.breakTimer
 			p.title Break Length
@@ -61,7 +63,7 @@ block content
 
 		.session
 			p#sessionName Session
-			p#pausedState.hidden ▌▌
+			p#pausedState.hidden ▐▐ 
 		p.seconds#secondsLeftText
 
 	.progress

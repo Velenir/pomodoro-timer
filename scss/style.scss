@@ -96,6 +96,14 @@ body {
 
 .globalSettings {
 	width: 100%;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+
+	@media (max-width: 500px) {
+		justify-content: space-around;
+	}
+
 	> div {
 		border: 3px solid yellow;
 		border-radius: 20px;
@@ -127,18 +135,6 @@ body {
 	}
 }
 
-.notificationControl {
-	// border: 3px solid yellow;
-	// border-radius: 20px;
-	// padding: 0.5em 1em;
-	// align-self: flex-start;
-	// text-shadow: 0.5px 0.5px gray;
-	box-shadow: raisedshadow(3, 0.7);
-	// margin: 10px 0 0 10px;
-	// background-color: #DC2C2C;
-	// color: #E8D0D7;
-}
-
 .controls {
 	text-align: center;
 	display: flex;
@@ -149,6 +145,7 @@ body {
 	background-color: $controls-color;
 	border: none;
 	margin-bottom: 30px;
+	position: relative;
 
 	// same in Chrome and Firefox
 	%uniform-btn-border {
@@ -163,7 +160,7 @@ body {
 	.midPanel {
 		align-self: center;
 
-		label {
+		> label {
 			margin: 0 2px;
 			// otherwise moves .midPanel when child is transltedY(*px)
 			vertical-align: -1em;
@@ -201,7 +198,7 @@ body {
 		margin: 15px;
 	}
 
-	%button {
+	button {
 		width: 40px;
 		height: 30px;
 		font-size: 1.5em;
@@ -218,7 +215,6 @@ body {
 	}
 
 	button.plus {
-		@extend %button;
 		border-radius: 50% 50% 0 0;
 		box-shadow: raisedshadow();
 		&:active:not(:disabled) {
@@ -227,11 +223,37 @@ body {
 	}
 
 	button.minus {
-		@extend %button;
 		border-radius: 0 0 50% 50%;
 		box-shadow: raisedshadow($yFactor: -1);
 		&:active:not(:disabled) {
 			transform: translateY(-4px);
+		}
+	}
+
+	button.midButton {
+		width: unset;
+		height: unset;
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		border-radius: 9px;
+
+		/* display: none; */
+		width: 31%;
+		height: 27px;
+		line-height: 21px;
+		border-radius: 9px 9px 50% 50% / 20% 20%;
+
+		box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.247059), 0 0 7px rgba(0, 0, 0, 0.14902);
+
+		&:active:not(:disabled) {
+			transform: translate(-50%, -2px);
+		}
+
+		@media (max-width: 370px) {
+			top: 100%;
+			bottom: unset;
 		}
 	}
 

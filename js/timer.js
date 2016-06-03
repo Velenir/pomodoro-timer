@@ -140,7 +140,7 @@ class Timer extends EventfulClass {
 		// first inform of modification
 		this.onSessionModified(settingSession, modification, isCurrentSession);
 		// then skip if necessary
-		if(seconds === 0 && isCurrentSession) this.goToNextSession();
+		if(seconds === 0 && isCurrentSession) this._sessionTransition();
 	}
 
 	setTimeLeft(seconds, name = this._currentSession.name) {
@@ -156,7 +156,7 @@ class Timer extends EventfulClass {
 		// first inform of modification
 		this.onSessionModified(settingSession, modification, isCurrentSession);
 		// then skip if necessary
-		if(seconds === 0 && isCurrentSession) this.goToNextSession();
+		if(seconds === 0 && isCurrentSession) this._sessionTransition();
 	}
 
 	get updateFrequency() {
@@ -232,7 +232,7 @@ class Timer extends EventfulClass {
 		// first inform of modification
 		this.onSessionModified(settingSession, modification, isCurrentSession);
 		// then skip if necessary
-		if(skip && isCurrentSession) this.goToNextSession();
+		if(skip && isCurrentSession) this._sessionTransition();
 	}
 
 	setSessionToPauseOnStart(pause = true, name = this._currentSession.name) {
@@ -380,6 +380,7 @@ class Timer extends EventfulClass {
 	goToNextSession() {
 		const prevSession = {session: this._currentSession, index: this._currentSessionIndex};
 		({index: this._currentSessionIndex, session: this._currentSession} = this._getNextSession());
+		if(this._currentSession) this._resetCurrentSessionIfElapsed();
 		this.onSessionChanged(prevSession);
 	}
 
@@ -415,6 +416,18 @@ class Timer extends EventfulClass {
 		return {index: nextSessionIndex, session: nextSession};
 	}
 
+	skipToNextSession(thenPause) {
+		this.goToNextSession();
+		this.resetCurrentSession();
+
+		// if no next session for whatever reason
+		if(this._currentSession == null) return this.stop("no-next-session");
+
+		this.onSessionProgress();
+
+		if(thenPause) this.pause("paused-on-start");
+	}
+
 	_pauseOnStartIfRequired() {
 		const paused = this._pauseOnSessionStart || this._currentSession.pauseOnStart;
 		if(paused) this.pause("paused-on-start");
@@ -435,7 +448,7 @@ class Timer extends EventfulClass {
 	}
 
 	onSessionChanged(ended) {
-		console.log('timer:session-changed', ended.session.name, ended.index, "=>", this._currentSession.name, this._currentSessionIndex);
+		console.log('timer:session-changed', ended.session, ended.index, "=>", this._currentSession, this._currentSessionIndex);
 		this.emit('timer:session-changed', {ended, started: {session: this._currentSession, index: this._currentSessionIndex}});
 	}
 

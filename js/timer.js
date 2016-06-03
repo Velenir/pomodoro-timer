@@ -363,7 +363,7 @@ class Timer extends EventfulClass {
 	}
 
 	_sessionTransition() {
-		this.goToNextSession();
+		this._goToNextSession();
 
 		// if no next session for whatever reason
 		if(this._currentSession == null) this.stop("no-next-session");
@@ -377,7 +377,7 @@ class Timer extends EventfulClass {
 		}
 	}
 
-	goToNextSession() {
+	_goToNextSession() {
 		const prevSession = {session: this._currentSession, index: this._currentSessionIndex};
 		({index: this._currentSessionIndex, session: this._currentSession} = this._getNextSession());
 		if(this._currentSession) this._resetCurrentSessionIfElapsed();
@@ -417,7 +417,7 @@ class Timer extends EventfulClass {
 	}
 
 	skipToNextSession(thenPause) {
-		this.goToNextSession();
+		this._goToNextSession();
 		this.resetCurrentSession();
 
 		// if no next session for whatever reason
@@ -504,4 +504,8 @@ eventDispatcher.on('check-pause-on-break-start:changed', (on) => {
 });
 eventDispatcher.on('check-pause-on-work-start:changed', (on) => {
 	pomodoroTimer.setSessionToPauseOnStart(on, "work");
+});
+
+eventDispatcher.on('skip-session-button-clicked', (on) => {
+	pomodoroTimer.skipToNextSession(true);
 });

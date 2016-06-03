@@ -1,3 +1,5 @@
+// .midPanel input[type="checkbox"]
+
 const checkVolume = document.getElementById("check-volume");
 const checkClockSeconds = document.getElementById("check-clock-seconds");
 const checkClockFilled = document.getElementById("check-clock-filled");
@@ -20,4 +22,13 @@ checkClockFilled.addEventListener('change', function () {
 
 checkProgress.addEventListener('change', function () {
 	eventDispatcher.emit('check-progress:changed', this.checked);
+});
+
+
+// .controls > button#skipSession
+
+const skipSessionBtn = document.getElementById('skipSession');
+
+skipSessionBtn.addEventListener('click', () => {
+	eventDispatcher.emit("skip-session-button-clicked");
 });

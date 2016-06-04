@@ -18,3 +18,5 @@ pauseOnWorkStart.addEventListener('change', function () {
 	console.log(this, "changed to", this.checked ? "checked" : "unchecked");
 	eventDispatcher.emit('check-pause-on-work-start:changed', this.checked);
 });
+
+// TODO: sound, notification, storage

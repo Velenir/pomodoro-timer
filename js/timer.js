@@ -5,8 +5,8 @@
 	* @param updateFrequency	frequency to call _decrement at on current session, in seconds
 	* @param loop	whether to loop to first session upon reaching the end or not
 	* @param eventDispatcher	an instance of EventDispatcher class, will be ceated if no existing EventDispatcher is passed
-	* @param pauseOnSessionStart	whether to pause when changing to a new session (right after onSessionProgress is fired, left === len)
-	* @param pauseOnSessionEnd	whether to pause when currentSession has elapsed (right after onSessionProgress is fired, left === 0)
+	* @param pauseOnSessionStart	whether to pause when changing to a new session (right after _onSessionProgress is fired, left === len)
+	* @param pauseOnSessionEnd	whether to pause when currentSession has elapsed (right after _onSessionProgress is fired, left === 0)
 	* @param reversed	go through sessions array in reverse
  * @param  sessions array of {name: 'work', len: 25}
 	* @param name	name of the session
@@ -54,7 +54,7 @@ class Timer extends EventfulClass {
 		this._pause();
 		this.reset();
 
-		this.onSessionModified(sessions, {valueName: "new-sessions"});
+		this._onSessionModified(sessions, {valueName: "new-sessions"});
 	}
 
 	isIdle() {
@@ -83,7 +83,7 @@ class Timer extends EventfulClass {
 			if(this.isActive() || this.isPaused()) this._resetCurrentSessionIfElapsed();
 		}
 
-		this.onSessionModified(session, {valueName: "new-session"}, isCurrentSession);
+		this._onSessionModified(session, {valueName: "new-session"}, isCurrentSession);
 	}
 
 	get state() {
@@ -138,7 +138,7 @@ class Timer extends EventfulClass {
 		if(isCurrentSession && resetCurrentSession) this.resetCurrentSession();
 
 		// first inform of modification
-		this.onSessionModified(settingSession, modification, isCurrentSession);
+		this._onSessionModified(settingSession, modification, isCurrentSession);
 		// then skip if necessary
 		if(seconds === 0 && isCurrentSession) this._sessionTransition();
 	}
@@ -154,7 +154,7 @@ class Timer extends EventfulClass {
 		const isCurrentSession = settingSession === this._currentSession;
 
 		// first inform of modification
-		this.onSessionModified(settingSession, modification, isCurrentSession);
+		this._onSessionModified(settingSession, modification, isCurrentSession);
 		// then skip if necessary
 		if(seconds === 0 && isCurrentSession) this._sessionTransition();
 	}
@@ -168,7 +168,7 @@ class Timer extends EventfulClass {
 		const modification = {valueName: "updateFrequency", oldValue: this._updateFrequency, newValue: freq};
 		this._updateFrequency = freq;
 
-		this.onOptionsModified(modification);
+		this._onOptionsModified(modification);
 		// restart interval timer with new frequency if in progress
 		if(this.isActive()) {
 			this._pause();
@@ -184,7 +184,7 @@ class Timer extends EventfulClass {
 		const modification = {valueName: "loop", oldValue: this._loop, newValue: loop};
 		this._loop = loop;
 
-		this.onOptionsModified(modification);
+		this._onOptionsModified(modification);
 	}
 
 	get reversed() {
@@ -195,7 +195,7 @@ class Timer extends EventfulClass {
 		const modification = {valueName: "reversed", oldValue: this._reversed, newValue: reversed};
 		this._reversed = reversed;
 
-		this.onOptionsModified(modification);
+		this._onOptionsModified(modification);
 	}
 
 	get pauseOnSessionStart() {
@@ -206,7 +206,7 @@ class Timer extends EventfulClass {
 		const modification = {valueName: "pauseOnSessionStart", oldValue: this._pauseOnSessionStart, newValue: pause};
 		this._pauseOnSessionStart = pause;
 
-		this.onOptionsModified(modification);
+		this._onOptionsModified(modification);
 	}
 
 	get pauseOnSessionEnd() {
@@ -217,7 +217,7 @@ class Timer extends EventfulClass {
 		const modification = {valueName: "pauseOnSessionEnd", oldValue: this._pauseOnSessionEnd, newValue: pause};
 		this._pauseOnSessionEnd = pause;
 
-		this.onOptionsModified(modification);
+		this._onOptionsModified(modification);
 	}
 
 	setSessionToSkip(skip = true, name = this._currentSession.name) {
@@ -230,7 +230,7 @@ class Timer extends EventfulClass {
 		const isCurrentSession = settingSession === this._currentSession;
 
 		// first inform of modification
-		this.onSessionModified(settingSession, modification, isCurrentSession);
+		this._onSessionModified(settingSession, modification, isCurrentSession);
 		// then skip if necessary
 		if(skip && isCurrentSession) this._sessionTransition();
 	}
@@ -245,7 +245,7 @@ class Timer extends EventfulClass {
 		const isCurrentSession = settingSession === this._currentSession;
 
 		// first inform of modification
-		this.onSessionModified(settingSession, modification, isCurrentSession);
+		this._onSessionModified(settingSession, modification, isCurrentSession);
 	}
 
 	setSessionToPauseOnEnd(pause = true, name = this._currentSession.name) {
@@ -258,7 +258,7 @@ class Timer extends EventfulClass {
 		const isCurrentSession = settingSession === this._currentSession;
 
 		// first inform of modification
-		this.onSessionModified(settingSession, modification, isCurrentSession);
+		this._onSessionModified(settingSession, modification, isCurrentSession);
 	}
 
 	start(reason = "called-from-without") {
@@ -287,7 +287,7 @@ class Timer extends EventfulClass {
 		this.resetOrder();
 		this._state = "idle";
 
-		this.onStateChanged(prevState, reason);
+		this._onStateChanged(prevState, reason);
 	}
 
 	pause(reason = "called-from-without") {
@@ -295,7 +295,7 @@ class Timer extends EventfulClass {
 		this._pause();
 		this._state = "paused";
 
-		this.onStateChanged(prevState, reason);
+		this._onStateChanged(prevState, reason);
 	}
 
 	_pause() {
@@ -310,12 +310,12 @@ class Timer extends EventfulClass {
 		this._resume();
 		this._state = "active";
 
-		this.onStateChanged(prevState, reason);
+		this._onStateChanged(prevState, reason);
 	}
 
 	_resume() {
 		// first report current/starting progress
-		this.onSessionProgress();
+		this._onSessionProgress();
 		this.intervalId = setInterval(this._decrement.bind(this), this._updateFrequency * 1000); //updateFrequency is in seconds
 	}
 
@@ -352,7 +352,7 @@ class Timer extends EventfulClass {
 		// don't actually let it go below 0
 		if(this._currentSession.left < 0) this._currentSession.left = 0;
 
-		this.onSessionProgress();
+		this._onSessionProgress();
 
 		// if timer elapsed
 		if(this._currentSession.left === 0) {
@@ -371,7 +371,7 @@ class Timer extends EventfulClass {
 		else {
 			this._resetCurrentSessionIfElapsed();
 			// first report current/starting progress
-			this.onSessionProgress();
+			this._onSessionProgress();
 			// pause if required at the start of new session
 			this._pauseOnStartIfRequired();
 		}
@@ -381,7 +381,7 @@ class Timer extends EventfulClass {
 		const prevSession = {session: this._currentSession, index: this._currentSessionIndex};
 		({index: this._currentSessionIndex, session: this._currentSession} = this._getNextSession());
 		if(this._currentSession) this._resetCurrentSessionIfElapsed();
-		this.onSessionChanged(prevSession);
+		this._onSessionChanged(prevSession);
 	}
 
 	_getNextSession() {
@@ -416,16 +416,28 @@ class Timer extends EventfulClass {
 		return {index: nextSessionIndex, session: nextSession};
 	}
 
-	skipToNextSession(thenPause) {
+	skipToNextSession(thenPause = false, resetCurrent = true) {
+		// reset, then skip
+		if(resetCurrent) this.resetCurrentSession();
 		this._goToNextSession();
 		this.resetCurrentSession();
 
 		// if no next session for whatever reason
 		if(this._currentSession == null) return this.stop("no-next-session");
 
-		this.onSessionProgress();
+		this._onSessionProgress();
 
 		if(thenPause) this.pause("paused-on-start");
+	}
+
+	skipToPreviousSession(thenPause = false, resetCurrent = true) {
+		// reverse direction
+		this._reversed = !this._reversed;
+
+		this.skipToNextSession(thenPause, resetCurrent);
+
+		// restore direction
+		this._reversed = !this._reversed;
 	}
 
 	_pauseOnStartIfRequired() {
@@ -442,30 +454,30 @@ class Timer extends EventfulClass {
 		return paused;
 	}
 
-	onStateChanged(previousState, reason) {
+	_onStateChanged(previousState, reason) {
 		console.log("timer:state-changed", this._currentSession.name, previousState, "=>", this._state);
 		this.emit("timer:state-changed", {previousState, currentState: this._state, session: this._currentSession, index: this._currentSessionIndex, reason});
 	}
 
-	onSessionChanged(ended) {
+	_onSessionChanged(ended) {
 		console.log('timer:session-changed', ended.session, ended.index, "=>", this._currentSession, this._currentSessionIndex);
 		this.emit('timer:session-changed', {ended, started: {session: this._currentSession, index: this._currentSessionIndex}});
 	}
 
-	onSessionProgress() {
+	_onSessionProgress() {
 		console.log("timer:session-in-progress", this._currentSession.name, this._currentSession.left);
 		this.emit("timer:session-in-progress", {session: this._currentSession, index: this._currentSessionIndex});
 	}
 
 	// fired on setting len, left, skip values or adding a new session via instance methods (not directly through inst.sessions[0].len = ...)
-	onSessionModified(session, modification, isCurrentSession) {
+	_onSessionModified(session, modification, isCurrentSession) {
 		//  modification is of form {valueName: "new-session"} or {valueName: "[value name], oldValue: [number], newValue: [number]"}
 		console.log("session", session.name, "modified", modification, ", isCurrentSession", isCurrentSession);
 		this.emit("timer:session-modified", {session, modification, isCurrentSession, timerState: this.state});
 	}
 
 	// fired on setting updateFrequency and loop values
-	onOptionsModified(modification) {
+	_onOptionsModified(modification) {
 		//  modification is of form {valueName: "[value name], oldValue: [number], newValue: [number]"}
 		console.log("timer:options-modified", modification, this.state);
 		this.emit("timer:options-modified", {modification, timerState: this.state});

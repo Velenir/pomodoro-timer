@@ -363,7 +363,7 @@ class Timer extends EventfulClass {
 	}
 
 	_sessionTransition() {
-		this._goToNextSession();
+		this._goToNextSession("previous-session-ended");
 
 		// if no next session for whatever reason
 		if(this._currentSession == null) this.stop("no-next-session");
@@ -377,11 +377,11 @@ class Timer extends EventfulClass {
 		}
 	}
 
-	_goToNextSession() {
+	_goToNextSession(reason) {
 		const prevSession = {session: this._currentSession, index: this._currentSessionIndex};
 		({index: this._currentSessionIndex, session: this._currentSession} = this._getNextSession());
 		if(this._currentSession) this._resetCurrentSessionIfElapsed();
-		this._onSessionChanged(prevSession);
+		this._onSessionChanged(prevSession, reason);
 	}
 
 	_getNextSession() {
@@ -417,9 +417,13 @@ class Timer extends EventfulClass {
 	}
 
 	skipToNextSession(thenPause = false, resetCurrent = true) {
+		this._skipSession(thenPause, resetCurrent, "skipped-to-next-session");
+	}
+
+	_skipSession(thenPause, resetCurrent, reason) {
 		// reset, then skip
 		if(resetCurrent) this.resetCurrentSession();
-		this._goToNextSession();
+		this._goToNextSession(reason);
 		this.resetCurrentSession();
 
 		// if no next session for whatever reason
@@ -434,7 +438,7 @@ class Timer extends EventfulClass {
 		// reverse direction
 		this._reversed = !this._reversed;
 
-		this.skipToNextSession(thenPause, resetCurrent);
+		this._skipSession(thenPause, resetCurrent, "skipped-to-previous-session");
 
 		// restore direction
 		this._reversed = !this._reversed;
@@ -459,9 +463,9 @@ class Timer extends EventfulClass {
 		this.emit("timer:state-changed", {previousState, currentState: this._state, session: this._currentSession, index: this._currentSessionIndex, reason});
 	}
 
-	_onSessionChanged(ended) {
+	_onSessionChanged(ended, reason) {
 		console.log('timer:session-changed', ended.session, ended.index, "=>", this._currentSession, this._currentSessionIndex);
-		this.emit('timer:session-changed', {ended, started: {session: this._currentSession, index: this._currentSessionIndex}});
+		this.emit('timer:session-changed', {ended, started: {session: this._currentSession, index: this._currentSessionIndex}, reason});
 	}
 
 	_onSessionProgress() {

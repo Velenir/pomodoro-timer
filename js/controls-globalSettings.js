@@ -17,37 +17,17 @@ pauseOnWorkStart.addEventListener('change', function () {
 
 // .globalSettings > .notificationControl
 
-const notifyOnBreak = document.getElementById("notify-break");
-const notifyOnWork = document.getElementById("notify-work");
+let notifyOnBreak = document.getElementById("notify-break");
+let notifyOnWork = document.getElementById("notify-work");
 
 
 notifyOnBreak.onclick = notifyOnWork.onclick = askForPermission;
 
-// function fireNotification(sessionName) {
-// 	// if notifications aren't supported
-// 	if (!("Notification" in window)) {
-// 		alert("This browser does not support desktop notification");
-// 	}
-//
-// 	// if permission was granted previously
-// 	else if (Notification.permission === "granted") {
-// 		buildNotification(sessionName);
-// 	}
-//
-// 	// otherwise, ask permission
-// 	else if (Notification.permission !== 'denied') {
-// 		Notification.requestPermission(function (permission) {
-// 			if (permission === "granted") {
-// 				buildNotification(sessionName);
-// 			}
-// 		});
-// 	}
-// }
-
 (function () {
 	// if notifications aren't supported, remove the panel
 	if (!("Notification" in window)) {
-		alert("This browser does not support desktop notification");
+		// don't keep references
+		notifyOnBreak = notifyOnWork = null;
 		const notificationPanel = document.querySelector('.notificationControl');
 		notificationPanel.parentNode.removeChild(notificationPanel);
 	}else if (Notification.permission === 'denied') {
@@ -92,13 +72,18 @@ document.addEventListener("click", () => {
 
 function fireNotification(sessionName) {
 	// if .notificationControl has been removed
-	if(!document.body.contains(notifyOnBreak)) return;
+	if(notifyOnBreak === null) return;
 	// only if permission is granted explicitly
 	if (Notification.permission !== "granted") return;
 
 	const itsBreakTime = sessionName === "break";
 	if((itsBreakTime && notifyOnBreak.checked) || (!itsBreakTime && notifyOnWork.checked)) {
 		notification = buildNotification(itsBreakTime);
+		notification.addEventListener('close', function () {
+			console.log("notification closed");
+			// don't keep the reference
+			notification = null;
+		});
 	}
 }
 
@@ -113,7 +98,8 @@ function buildNotification(itsBreakTime) {
 	return new Notification(title, {body, icon});
 }
 
-eventDispatcher.on('timer:session-changed', ({started: {session: {name}}}) => {
-	console.log("session started", name);
-	fireNotification(name);
+eventDispatcher.on('timer:session-changed', ({started: {session: {name}}, reason}) => {
+	console.log("session started", name, "for reason", reason);
+	// don't fire on skipSession
+	if(reason === "previous-session-ended")	fireNotification(name);
 });

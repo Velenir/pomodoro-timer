@@ -1,4 +1,4 @@
-// .time in .controls > .workTimer and. breakTimer
+// .time in .timingControls > .workTimer and. breakTimer
 
 const workTime = document.querySelector('.workTimer > .time');
 const breakTime = document.querySelector('.breakTimer > .time');

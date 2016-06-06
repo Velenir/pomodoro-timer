@@ -13,12 +13,21 @@ pauseOnWorkStart.addEventListener('change', function () {
 	eventDispatcher.emit('check-pause-on-work-start:changed', this.checked);
 });
 
-// TODO: sound, notification, storage
+// TODO: sound, storage
 
-// .globalSettings > .notificationControl
+// .globalSettings > .notificationControls
 
 let notifyOnBreak = document.getElementById("notify-break");
 let notifyOnWork = document.getElementById("notify-work");
+
+notifyOnBreak.addEventListener('change', function () {
+	console.log(this, "changed to", this.checked ? "checked" : "unchecked");
+	eventDispatcher.emit('notify-break:changed', this.checked);
+});
+notifyOnWork.addEventListener('change', function () {
+	console.log(this, "changed to", this.checked ? "checked" : "unchecked");
+	eventDispatcher.emit('notify-work:changed', this.checked);
+});
 
 
 notifyOnBreak.onclick = notifyOnWork.onclick = askForPermission;
@@ -28,7 +37,7 @@ notifyOnBreak.onclick = notifyOnWork.onclick = askForPermission;
 	if (!("Notification" in window)) {
 		// don't keep references
 		notifyOnBreak = notifyOnWork = null;
-		const notificationPanel = document.querySelector('.notificationControl');
+		const notificationPanel = document.querySelector('.notificationControls');
 		notificationPanel.parentNode.removeChild(notificationPanel);
 	}else if (Notification.permission === 'denied') {
 		disableNotifyChecks();
@@ -71,7 +80,7 @@ document.addEventListener("click", () => {
 })
 
 function fireNotification(sessionName) {
-	// if .notificationControl has been removed
+	// if .notificationControls has been removed
 	if(notifyOnBreak === null) return;
 	// only if permission is granted explicitly
 	if (Notification.permission !== "granted") return;

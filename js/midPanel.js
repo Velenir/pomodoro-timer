@@ -25,7 +25,7 @@ checkProgress.addEventListener('change', function () {
 });
 
 
-// .controls > button#skipSession
+// .timingControls > button#skipSession
 
 const skipSessionBtn = document.getElementById('skipSession');
 

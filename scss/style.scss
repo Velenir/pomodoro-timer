@@ -27,8 +27,8 @@ $tomato-timer-font-size: 2.5em;
 $seconds-left-radius: 51;
 
 $body-color: #DA2222 !default;
-$controls-color: #DC2C2C !default;
-$controls-text-color: white !default;
+$timingControls-color: #DC2C2C !default;
+$timingControls-text-color: white !default;
 $tomato-text-color: white !default;
 $tomato-minutes-color: #c8b9b9 !default;
 $tomato-secondsleft-color: #A59C7D !default;
@@ -91,7 +91,7 @@ body {
 }
 
 // REMOVE
-// .controls > div, .tomatoTimer, .progressBar {
+// .timingControls > div, .tomatoTimer, .progressBar {
 // 	border: 1px solid gray;
 // }
 
@@ -136,14 +136,14 @@ body {
 	}
 }
 
-.controls {
+.timingControls {
 	text-align: center;
 	display: flex;
 	justify-content: space-between;
 	width: $relative-size * 1%;
 	max-width: $max-size;
 	border-radius: 50%;
-	background-color: $controls-color;
+	background-color: $timingControls-color;
 	border: none;
 	margin-bottom: 30px;
 	position: relative;
@@ -190,12 +190,12 @@ body {
 		// left, right: 0 doesn't fit on one line in Firefox
 		left: -20%;
 		right: -20%;
-		color: darken($controls-text-color, 20%);
+		color: darken($timingControls-text-color, 20%);
 		font-weight: bold;
 	}
 	.time {
 		font-size: 1.5em;
-		color: $controls-text-color;
+		color: $timingControls-text-color;
 		margin: 15px;
 	}
 

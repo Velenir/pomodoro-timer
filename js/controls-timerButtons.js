@@ -1,4 +1,4 @@
-// button.plus and .minus in .controls > .workTimer and. breakTimer
+// button.plus and .minus in .timingControls > .workTimer and. breakTimer
 
 const workPlus = document.querySelector('.workTimer > .plus');
 const workMinus = document.querySelector('.workTimer > .minus');

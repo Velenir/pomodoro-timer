@@ -9,6 +9,11 @@ minutesSvg.addEventListener('transitionend', function() {
 	this.classList.remove('changing');
 });
 
+function cancelTransition() {
+	minutesSvg.classList.remove('changing');
+	minutesSvg.classList.add('no-transition');
+}
+
 function changeMinuteSvg(h, m, changeNow, newSessionStarted) {
 
 	const hAndMin = h >= 1 ? `${h}:${m<10 ? "0"+m : m}` : m;
@@ -33,8 +38,7 @@ function changeMinuteSvg(h, m, changeNow, newSessionStarted) {
 function setImmediateMinuteSvg(h, m) {
 	const hAndMin = h >= 1 ? `${h}:${m<10 ? "0"+m : m}` : m;
 	// cancel transition in progress if any
-	minutesSvg.classList.remove('changing');
-	minutesSvg.classList.add('no-transition');
+	cancelTransition();
 
 	minutesSvgValue = hAndMin;
 	minutesSvg.textContent = hAndMin;
@@ -124,9 +128,21 @@ eventDispatcher.on('timer:state-changed', ({currentState, reason}) => {
 	if(paused && reason === "paused-on-start") {
 		console.log("paused-on-start");
 		// cancel transition in progress if any
-		minutesSvg.classList.remove('changing');
-		minutesSvg.classList.add('no-transition');
+		cancelTransition();
 	}
 
 	pausedStateText.classList.toggle("hidden", !paused);
+});
+
+
+// otherwise transition replays after the fact as soon as focus returns to the page/tab
+document.addEventListener("visibilitychange", function() {
+  console.log( document.visibilityState, minutesSvg.classList.contains('changing'));
+	if(document.visibilityState === "visible") {
+		// cancelTransition();
+		const {h, m} = secondsToHMinSec(pomodoroTimer.currentSession.left == null ? pomodoroTimer.currentSession.len : pomodoroTimer.currentSession.left);
+		console.log("After visibility change, HM", h, m);
+		setImmediateMinuteSvg(h, m);
+	}
+
 });

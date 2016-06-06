@@ -12,6 +12,7 @@ button {
 	&:disabled {
 		cursor: not-allowed;
 		color: #808080;
+		background-color: #D63E3E !important;
 	}
 }
 
@@ -316,17 +317,27 @@ body {
 		top: 0;
 		left: 0;
 		right: 0;
-		letter-spacing: .1em;
+		letter-spacing: .2em;
 		font-family: monospace;
 		font-weight: bold;
-		text-transform: capitalize;
 
 		> p:first-child {
 			margin-bottom: 0;
+			letter-spacing: .3em;
+			text-transform: capitalize;
+		}
+
+		> p:nth-child(2) {
+			margin: 0;
+
+			@media (max-width: 650px) {
+				display: none;
+			}
 		}
 
 		> p:last-child {
 			margin-top: 0;
+			letter-spacing: initial;
 		}
 	}
 

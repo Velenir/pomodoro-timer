@@ -126,4 +126,6 @@ function saveInitSettings() {
 window.addEventListener('load', function () {
 	if(localStorage.getItem("check-pause-on-break-start")) restoreSettings();
 	else saveInitSettings();
+
+	document.querySelector(".wrapper").classList.remove("transparent");
 });

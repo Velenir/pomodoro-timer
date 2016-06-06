@@ -1,79 +1,80 @@
 extend partials/layout
 
 block content
-	.globalSettings
-		.notificationControls
-			h3 Notify me when it's time
-			ul
-				li: label
-					input#notify-break(type="checkbox")
-					span for a break
-				li: label
-					input#notify-work(type="checkbox")
-					span for work
-				
-		.pauseControls
-			h3 Pause after
-			ul
-				li: label
-					input#pause-on-break-start(type="checkbox")
-					span a work session
-				li: label
-					input#pause-on-work-start(type="checkbox")
-					span a break session
+	.wrapper.transparent
+		.globalSettings
+			.notificationControls
+				h3 Notify me when it's time
+				ul
+					li: label
+						input#notify-break(type="checkbox")
+						span for a break
+					li: label
+						input#notify-work(type="checkbox")
+						span for work
 					
-		
-	h1.headTitle Pomodoro timer
-	.timingControls
-		.workTimer
-			p.title Work Length
-			button.plus(type="button") +
-			p.time 25
-			button.minus(type="button") -
-		.midPanel
-			each val in [{cls: "icon-volume", on: true, tooltip: "Sound on session end"}, {cls: "icon-clock-seconds", on: false, tooltip: "Display seconds perimeter"}, {cls: "icon-clock-filled", on: true, tooltip: "Display tomato"}, {cls: "icon-progress", on: false, tooltip: "Display progressbar"}]
-				label.icon(class=val.cls, title=val.tooltip)
-					input(type="checkbox", id=val.cls.replace('icon', 'check'), checked=val.on)
-					span
-		button#skipSession.midButton(type="button", title="Skip session") »
+			.pauseControls
+				h3 Pause after
+				ul
+					li: label
+						input#pause-on-break-start(type="checkbox")
+						span a work session
+					li: label
+						input#pause-on-work-start(type="checkbox")
+						span a break session
+						
 			
+		h1.headTitle Pomodoro timer
+		.timingControls
+			.workTimer
+				p.title Work Length
+				button.plus(type="button") +
+				p.time 25
+				button.minus(type="button") -
+			.midPanel
+				each val in [{cls: "icon-volume", on: true, tooltip: "Sound on session end"}, {cls: "icon-clock-seconds", on: false, tooltip: "Display seconds perimeter"}, {cls: "icon-clock-filled", on: true, tooltip: "Display tomato"}, {cls: "icon-progress", on: false, tooltip: "Display progressbar"}]
+					label.icon(class=val.cls, title=val.tooltip)
+						input(type="checkbox", id=val.cls.replace('icon', 'check'), checked=val.on)
+						span
+			button#skipSession.midButton(type="button", title="Skip session") »
 				
-		.breakTimer
-			p.title Break Length
-			button.plus(type="button") +
-			p.time 5
-			button.minus(type="button") -
-	
-	- let clickhoverMaskId = "pointerEventClip"
-	//- for some reason Firefox ignores clip-path inside CSS
-	.tomatoTimer(style="clip-path: url(##{clickhoverMaskId}); -webkit-clip-path: circle(50% at 50% 50%);")
-		.svgSpace
-			svg(xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', viewBox='0 0 100 100', preserveAspectratio='none')
-				defs
-					- let tomatoMaskId = "tomatoMask"
-					mask(id=tomatoMaskId)
-						circle(cx='50%', cy='50%', r='51%', fill="#844f4f")
-						path(id="arcMask", d="M50,0  a50,50 0 1,0 0.03141592446881286,0.000009869604078005523 z", fill="white" stroke="black")
-					clipPath(id=clickhoverMaskId, clipPathUnits="objectBoundingBox")
-						circle(cx='0.5', cy='0.5', r='0.51')
-				include partials/tomato
-				+tomato("all-tomato", tomatoMaskId)
-				text#minutesSvg(x='50%', y='50%', dy="15%") 25
-				circle#secondsLeft.invisible(cx='50%', cy='50%', r="51%", transform='rotate(-90 50 50)')
+					
+			.breakTimer
+				p.title Break Length
+				button.plus(type="button") +
+				p.time 5
+				button.minus(type="button") -
+		
+		- let clickhoverMaskId = "pointerEventClip"
+		//- for some reason Firefox ignores clip-path inside CSS
+		.tomatoTimer(style="clip-path: url(##{clickhoverMaskId}); -webkit-clip-path: circle(50% at 50% 50%);")
+			.svgSpace
+				svg(xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', viewBox='0 0 100 100', preserveAspectratio='none')
+					defs
+						- let tomatoMaskId = "tomatoMask"
+						mask(id=tomatoMaskId)
+							circle(cx='50%', cy='50%', r='51%', fill="#844f4f")
+							path(id="arcMask", d="M50,0  a50,50 0 1,0 0.03141592446881286,0.000009869604078005523 z", fill="white" stroke="black")
+						clipPath(id=clickhoverMaskId, clipPathUnits="objectBoundingBox")
+							circle(cx='0.5', cy='0.5', r='0.51')
+					include partials/tomato
+					+tomato("all-tomato", tomatoMaskId)
+					text#minutesSvg(x='50%', y='50%', dy="15%") 25
+					circle#secondsLeft.invisible(cx='50%', cy='50%', r="51%", transform='rotate(-90 50 50)')
 
-		.session
-			p#sessionName Work
-			p session
-			p#pausedState.hidden ❚❚
-		p.seconds#secondsLeftText
+			.session
+				p#sessionName Work
+				p session
+				p#pausedState.hidden ❚❚
+			p.seconds#secondsLeftText
 
-	.progress
-		progress#totalProgressBar.red.meter-animated.progress-off(value="0", max="100")
-		hr
-		input#maskRange(type="range", name="name", value="100")
-		output#sliderOut
-		hr
-		input#num(type='number', value='25', min='0', max='50')
-		hr
-		input#secondsSlider(type='range', value='60', max='60')
-		output#sliderOut2 0
+		.progress
+			progress#totalProgressBar.red.meter-animated.progress-off(value="0", max="100")
+			hr
+			input#maskRange(type="range", name="name", value="100")
+			output#sliderOut
+			hr
+			input#num(type='number', value='25', min='0', max='50')
+			hr
+			input#secondsSlider(type='range', value='60', max='60')
+			output#sliderOut2 0

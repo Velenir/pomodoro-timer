@@ -77,10 +77,19 @@ $tomato-secondsleft-color: #A59C7D !default;
 body {
 	min-height: 100vh;
 	margin: 0;
+	// display: flex;
+	// align-items: center;
+	// flex-direction: column;
+	background-color: $body-color;
+}
+
+.wrapper {
+	height: 100%;
+	width: 100%;
 	display: flex;
 	align-items: center;
 	flex-direction: column;
-	background-color: $body-color;
+	transition: opacity 1s;
 }
 
 .headTitle {
@@ -355,7 +364,6 @@ body {
 			overflow: visible;
 
 			.all-tomato {
-				clip-path: url(#clipPath);
 				transition: opacity 1.5s;
 			}
 

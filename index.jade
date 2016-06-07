@@ -1,6 +1,9 @@
 extend partials/layout
 
 block content
+	include partials/defaults
+	- const defaults = {}
+	+defaults(defaults)
 	.wrapper.transparent
 		.globalSettings
 			.notificationControls
@@ -29,20 +32,22 @@ block content
 			.workTimer
 				p.title Work Length
 				button.plus(type="button") +
-				p.time 25
+				p.time= defaults.workTime
 				button.minus(type="button") -
+
 			.midPanel
-				each val in [{cls: "icon-volume", on: true, tooltip: "Sound on session end"}, {cls: "icon-clock-seconds", on: false, tooltip: "Display seconds perimeter"}, {cls: "icon-clock-filled", on: true, tooltip: "Display tomato"}, {cls: "icon-progress", on: false, tooltip: "Display progressbar"}]
-					label.icon(class=val.cls, title=val.tooltip)
-						input(type="checkbox", id=val.cls.replace('icon', 'check'), checked=val.on)
+				- for(let [key,val] of defaults.checkboxes)
+					label.icon(class=key, title=val.tooltip)
+						input(type="checkbox", id=key.replace('icon', 'check'), checked=val.on)
 						span
+
 			button#skipSession.midButton(type="button", title="Skip session") »
 				
 					
 			.breakTimer
 				p.title Break Length
 				button.plus(type="button") +
-				p.time 5
+				p.time= defaults.breakTime
 				button.minus(type="button") -
 		
 		- let clickhoverMaskId = "pointerEventClip"
@@ -57,10 +62,13 @@ block content
 							path(id="arcMask", d="M50,0  a50,50 0 1,0 0.03141592446881286,0.000009869604078005523 z", fill="white" stroke="black")
 						clipPath(id=clickhoverMaskId, clipPathUnits="objectBoundingBox")
 							circle(cx='0.5', cy='0.5', r='0.51')
+					- const displayTomatoIcon = defaults.checkboxes.get("icon-clock-filled")
+					- const tomatoClass = displayTomatoIcon.on ? "all-tomato" : "all-tomato transparent"
 					include partials/tomato
-					+tomato("all-tomato", tomatoMaskId)
-					text#minutesSvg(x='50%', y='50%', dy="15%") 25
-					circle#secondsLeft.invisible(cx='50%', cy='50%', r="51%", transform='rotate(-90 50 50)')
+					+tomato(tomatoClass, tomatoMaskId)
+					text#minutesSvg(x='50%', y='50%', dy="15%")= defaults.workTime
+					- const displaySecondsIcon = defaults.checkboxes.get("icon-clock-seconds")
+					circle#secondsLeft(cx='50%', cy='50%', r="51%", transform='rotate(-90 50 50)', class=(displaySecondsIcon.on ? "" : "invisible"))
 
 			.session
 				p#sessionName Work
@@ -69,7 +77,8 @@ block content
 			p.seconds#secondsLeftText
 
 		.progress
-			progress#totalProgressBar.red.meter-animated.progress-off(value="0", max="100")
+			- const displayProgressbarIcon = defaults.checkboxes.get("icon-progress")
+			progress#totalProgressBar.red.meter-animated(value="0", max="100", class=(displayProgressbarIcon.on ? "" : "progress-off"))
 			hr
 			input#maskRange(type="range", name="name", value="100")
 			output#sliderOut

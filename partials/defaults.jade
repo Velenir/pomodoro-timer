@@ -1,0 +1,6 @@
+mixin defaults(obj)
+	- const checkMap = new Map([["icon-volume", {on: true, tooltip: "Sound on session end"}], ["icon-clock-seconds", {on: false, tooltip: "Display seconds perimeter"}], ["icon-clock-filled", {on: true, tooltip: "Display tomato"}], ["icon-progress", {on: false, tooltip: "Display progressbar"}]])	
+	
+	- obj.checkboxes = checkMap
+	- obj.workTime = 25
+	- obj.breakTime = 5

@@ -7,45 +7,29 @@ function restoreSettings() {
 
 	// .pauseControls
 	pauseOnBreakStart.checked = getStoredItem("check-pause-on-break-start");
-	eventDispatcher.emit('check-pause-on-break-start:changed', pauseOnBreakStart.checked);
-
 	pauseOnWorkStart.checked = getStoredItem("check-pause-on-work-start");
-	eventDispatcher.emit('check-pause-on-work-start:changed', pauseOnWorkStart.checked);
 
 	// .notificationControls
 	if(notifyOnBreak){
 		// check that .notificationControls weren't removed
 		notifyOnBreak.checked = getStoredItem("notify-break");
-		eventDispatcher.emit('notify-break:changed', notifyOnBreak.checked);
-
 		notifyOnWork.checked = getStoredItem("notify-work");
-		eventDispatcher.emit('notify-work:changed', notifyOnWork.checked);
 	}
 
 	// .timingComtrols
 	// .workTimer
-	const workTimeValue = getStoredItem("work-timer");
-	workTime.textContent = workTimeValue;
-	eventDispatcher.emit("work-timer:time-set", workTimeValue * 60);
+	workTime.textContent = getStoredItem("work-timer");
 
 	// .breakTimer
-	const breakTimeValue = getStoredItem("break-timer");
-	breakTime.textContent = breakTimeValue;
-	eventDispatcher.emit("break-timer:time-set", breakTimeValue * 60);
+	breakTime.textContent = getStoredItem("break-timer");
 
 	// .midPanel
 	checkVolume.checked = getStoredItem("check-volume");
-	eventDispatcher.emit('check-volume:changed', checkVolume.checked);
-
 	checkClockSeconds.checked = getStoredItem("check-clock-seconds");
-	eventDispatcher.emit('check-clock-seconds:changed', checkClockSeconds.checked);
-
 	checkClockFilled.checked = getStoredItem("check-clock-filled");
-	eventDispatcher.emit('check-clock-filled:changed', checkClockFilled.checked);
-
 	checkProgress.checked = getStoredItem("check-progress");
-	eventDispatcher.emit('check-progress:changed', checkProgress.checked);
 }
+
 
 // update localStorage on settings changes
 // .pauseControls
@@ -94,14 +78,12 @@ eventDispatcher.on('check-progress:changed', (val) => {
 function saveInitSettings() {
 	// .pauseControls
 	eventDispatcher.emit('check-pause-on-break-start:changed', pauseOnBreakStart.checked);
-
 	eventDispatcher.emit('check-pause-on-work-start:changed', pauseOnWorkStart.checked);
 
 	// .notificationControls
 	if(notifyOnBreak){
 		// check that .notificationControls weren't removed
 		eventDispatcher.emit('notify-break:changed', notifyOnBreak.checked);
-
 		eventDispatcher.emit('notify-work:changed', notifyOnWork.checked);
 	}
 
@@ -114,18 +96,17 @@ function saveInitSettings() {
 
 	// .midPanel
 	eventDispatcher.emit('check-volume:changed', checkVolume.checked);
-
 	eventDispatcher.emit('check-clock-seconds:changed', checkClockSeconds.checked);
-
-	eventDispatcher.emit('check-clock-filled:changed', checkClockFilled.checked);
-
+	eventDispatcher.emit('check-clock-filled:changed', checkClockFilled.checked, true);
 	eventDispatcher.emit('check-progress:changed', checkProgress.checked);
 }
 
 // when all resources are loaded and event listeners connected, try to restore settings
-window.addEventListener('load', function () {
-	if(localStorage.getItem("check-pause-on-break-start")) restoreSettings();
-	else saveInitSettings();
-
+window.addEventListener('DOMContentLoaded', function () {
+	console.log("DOM LOADED");
+	if(localStorage.getItem("check-pause-on-break-start")) {
+		restoreSettings();
+	}
 	document.querySelector(".wrapper").classList.remove("transparent");
+	saveInitSettings();
 });

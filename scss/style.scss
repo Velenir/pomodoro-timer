@@ -12,7 +12,6 @@ button {
 	&:disabled {
 		cursor: not-allowed;
 		color: #808080;
-		background-color: #D63E3E !important;
 	}
 }
 
@@ -52,7 +51,12 @@ $tomato-secondsleft-color: #A59C7D !default;
 }
 
 .transparent {
-	opacity: 0;
+	opacity: 0 !important;
+}
+
+// added dynamically to cancel a transition in progress
+.no-transition {
+	transition: none !important;
 }
 
 @function strip-units($value) {
@@ -221,6 +225,10 @@ body {
 		&:active:not(:disabled), &:active:focus:not(:disabled) {
 			box-shadow: none;
 			border: 1px solid gray;
+		}
+
+		&:disabled {
+			background-color: #D63E3E;
 		}
 	}
 
@@ -393,11 +401,6 @@ body {
 					@media screen and (min--moz-device-pixel-ratio: 0) {
 						stroke-dashoffset: $f-stroke-dArr;
 					}
-				}
-
-				// added dynamically to cancel a transition in progress
-				&.no-transition {
-					transition: none !important;
 				}
 			}
 

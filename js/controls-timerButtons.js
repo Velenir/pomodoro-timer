@@ -6,19 +6,35 @@ const workMinus = document.querySelector('.workTimer > .minus');
 const breakPlus = document.querySelector('.breakTimer > .plus');
 const breakMinus = document.querySelector('.breakTimer > .minus');
 
+let multiplier = 1;
+
+document.addEventListener("keydown", function (e) {
+	// keyCode 16 = SHIFT
+	if(e.keyCode === 16) {
+		console.log("SHIFT PRESSED");
+		multiplier = 5;
+	}
+});
+document.addEventListener("keyup", function(e) {
+	if(e.keyCode === 16) {
+		console.log("SHIFT RELEASED");
+		multiplier = 1;
+	}
+});
+
 function workIncrement() {
-	eventDispatcher.emit('work-timer:++');
+	eventDispatcher.emit('work-timer:++', multiplier);
 }
 function workDecrement() {
-	eventDispatcher.emit('work-timer:--');
+	eventDispatcher.emit('work-timer:--', multiplier);
 }
 
 function breakIncrement() {
 	console.log("breakincr");
-	eventDispatcher.emit('break-timer:++');
+	eventDispatcher.emit('break-timer:++', multiplier);
 }
 function breakDecrement() {
-	eventDispatcher.emit('break-timer:--');
+	eventDispatcher.emit('break-timer:--', multiplier);
 }
 
 function repeatFunction(repeatF, freq = 200) {
@@ -56,7 +72,7 @@ connectButtonOnOff(breakMinus, breakDecrementRepeat);
 
 function connectKeydown(btn, fn) {
 	btn.addEventListener('keydown', function(e) {
-		// keyCode 32 = space, 13 = Enter
+		// keyCode 32 = space, 13 = Enter, 16 = Shift
 		if(e.keyCode === 32 || e.keyCode === 13) {
 			fn();
 		}

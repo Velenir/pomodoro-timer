@@ -1,4 +1,4 @@
-// .time in .timingControls > .workTimer and. breakTimer
+// .time in .timingControls > .workTimer and .breakTimer
 
 const workTime = document.querySelector('.workTimer > .time');
 const breakTime = document.querySelector('.breakTimer > .time');
@@ -38,6 +38,12 @@ eventDispatcher.on('work-timer:--', (multiplier = 1) => {
 
 	emitControlTimerChange("work", newVal);
 });
+eventDispatcher.on('work-timer:set', (minutes) => {
+	if(parseInt(workTime.textContent, 10) === minutes) return;
+	workTime.textContent = minutes;
+
+	emitControlTimerChange("work", minutes);
+});
 
 eventDispatcher.on('break-timer:++', (multiplier = 1) => {
 	const oldVal = parseInt(breakTime.textContent, 10);
@@ -56,4 +62,10 @@ eventDispatcher.on('break-timer:--', (multiplier = 1) => {
 	breakTime.textContent = newVal;
 
 	emitControlTimerChange("break", newVal);
+});
+eventDispatcher.on('break-timer:set', (minutes) => {
+	if(parseInt(breakTime.textContent, 10) === minutes) return;
+	breakTime.textContent = minutes;
+
+	emitControlTimerChange("break", minutes);
 });

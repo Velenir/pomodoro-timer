@@ -5,6 +5,18 @@ const shortBreak5 = document.getElementById('short-break-5');
 const longBreak15 = document.getElementById('long-break-15');
 const longBreak30 = document.getElementById('long-break-30');
 
+work25.addEventListener('click', function () {
+	eventDispatcher.emit("work-timer:set", 25);
+});
+shortBreak5.addEventListener('click', function () {
+	eventDispatcher.emit("break-timer:set", 5);
+});
+longBreak15.addEventListener('click', function () {
+	eventDispatcher.emit("break-timer:set", 15);
+});
+longBreak30.addEventListener('click', function () {
+	eventDispatcher.emit("break-timer:set", 30);
+});
 
 // button.plus and .minus in .timingControls > .workTimer and. breakTimer
 

@@ -44,8 +44,6 @@ function setImmediateMinuteSvg(h, m) {
 	minutesSvg.textContent = hAndMin;
 }
 
-eventDispatcher.on('minutes-left', changeMinuteSvg);
-
 
 // .tomatoTimer > .svgSpace #secondsLeft, .tomatoTimer > .seconds
 
@@ -61,13 +59,7 @@ function changeCircleDashOffset(secondsLeft) {
 	secondsLeftCircle.style["stroke-dashoffset"] = -fct * dashoffset;
 }
 
-eventDispatcher.on('seconds-left', changeCircleDashOffset);
-
 const secondsLeftText = document.getElementById('secondsLeftText');
-
-eventDispatcher.on('seconds-left', (seconds) => {
-	secondsLeftText.textContent = seconds;
-});
 
 eventDispatcher.on('check-clock-seconds:changed', (on) => {
 	secondsLeftCircle.classList.toggle('invisible', !on);
@@ -139,7 +131,6 @@ eventDispatcher.on('timer:state-changed', ({currentState, reason}) => {
 document.addEventListener("visibilitychange", function() {
   console.log( document.visibilityState, minutesSvg.classList.contains('changing'));
 	if(document.visibilityState === "visible") {
-		// cancelTransition();
 		const {h, m} = secondsToHMinSec(pomodoroTimer.currentSession.left == null ? pomodoroTimer.currentSession.len : pomodoroTimer.currentSession.left);
 		console.log("After visibility change, HM", h, m);
 		setImmediateMinuteSvg(h, m);

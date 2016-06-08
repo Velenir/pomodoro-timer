@@ -105,7 +105,11 @@ function saveInitSettings() {
 window.addEventListener('DOMContentLoaded', function () {
 	console.log("DOM LOADED");
 	if(localStorage.getItem("check-pause-on-break-start")) {
-		restoreSettings();
+		try {
+			restoreSettings();
+		} catch (e) {
+			console.log("Error", e);
+		}
 	}
 	document.querySelector(".wrapper").classList.remove("transparent");
 	saveInitSettings();

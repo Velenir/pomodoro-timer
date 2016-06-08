@@ -1,3 +1,11 @@
+// .pomodoroDefaults button
+
+const work25 = document.getElementById('work-25');
+const shortBreak5 = document.getElementById('short-break-5');
+const longBreak15 = document.getElementById('long-break-15');
+const longBreak30 = document.getElementById('long-break-30');
+
+
 // button.plus and .minus in .timingControls > .workTimer and. breakTimer
 
 const workPlus = document.querySelector('.workTimer > .plus');
@@ -87,16 +95,14 @@ connectKeydown(breakMinus, breakDecrement);
 
 function disableBtn(disable, btnName) {
 	if(btnName === "work") {
-		workPlus.disabled = disable;
-		workMinus.disabled = disable;
+		work25.disabled = workMinus.disabled = workPlus.disabled = disable;
 
 		// stop incr/decrementing if in progress
 		workIncrementRepeat.stop();
 		workDecrementRepeat.stop();
 
 	}else if (btnName === "break") {
-		breakPlus.disabled = disable;
-		breakMinus.disabled = disable;
+		longBreak30.disabled = longBreak15.disabled = shortBreak5.disabled = breakMinus.disabled = breakPlus.disabled = disable;
 
 		// stop incr/decrementing if in progress
 		breakIncrementRepeat.stop();

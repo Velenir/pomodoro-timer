@@ -13,7 +13,7 @@ pauseOnWorkStart.addEventListener('change', function () {
 	eventDispatcher.emit('check-pause-on-work-start:changed', this.checked);
 });
 
-// TODO: sound, storage
+// TODO: sound
 
 // .globalSettings > .notificationControls
 
@@ -92,6 +92,11 @@ function fireNotification(sessionName) {
 			console.log("notification closed");
 			// don't keep the reference
 			notification = null;
+		});
+		notification.addEventListener('click', function () {
+			console.log("notification clicked");
+			window.focus();
+			notification.close();
 		});
 	}
 }

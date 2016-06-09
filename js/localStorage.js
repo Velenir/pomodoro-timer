@@ -1,10 +1,10 @@
 // store user settings between sessions
 
-function restoreSettings() {
-	function getStoredItem(keyName) {
-		return JSON.parse(localStorage.getItem(keyName));
-	}
+function getStoredItem(keyName) {
+	return JSON.parse(localStorage[keyName]);
+}
 
+function restoreSettings() {
 	// .pauseControls
 	pauseOnBreakStart.checked = getStoredItem("check-pause-on-break-start");
 	pauseOnWorkStart.checked = getStoredItem("check-pause-on-work-start");
@@ -34,43 +34,43 @@ function restoreSettings() {
 // update localStorage on settings changes
 // .pauseControls
 eventDispatcher.on('check-pause-on-break-start:changed', (val) => {
-	localStorage.setItem("check-pause-on-break-start", val);
+	localStorage["check-pause-on-break-start"] = val;
 });
 eventDispatcher.on('check-pause-on-work-start:changed', (val) => {
-	localStorage.setItem("check-pause-on-work-start", val);
+	localStorage["check-pause-on-work-start"] = val;
 });
 
 // .notificationControls
 eventDispatcher.on('notify-break:changed', (val) => {
-	localStorage.setItem("notify-break", val);
+	localStorage["notify-break"] = val;
 });
 eventDispatcher.on('notify-work:changed', (val) => {
-	localStorage.setItem("notify-work", val);
+	localStorage["notify-work"] = val;
 });
 
 // .timingComtrols
 // .workTimer
 eventDispatcher.on('work-timer:time-set', (val) => {
-	localStorage.setItem("work-timer", val/60);
+	localStorage["work-timer"] = val/60;
 });
 
 // .breakTimer
 eventDispatcher.on('break-timer:time-set', (val) => {
-	localStorage.setItem("break-timer", val/60);
+	localStorage["break-timer"] = val/60;
 });
 
 // .midPanel
 eventDispatcher.on('check-volume:changed', (val) => {
-	localStorage.setItem("check-volume", val);
+	localStorage["check-volume"] = val;
 });
 eventDispatcher.on('check-clock-seconds:changed', (val) => {
-	localStorage.setItem("check-clock-seconds", val);
+	localStorage["check-clock-seconds"] = val;
 });
 eventDispatcher.on('check-clock-filled:changed', (val) => {
-	localStorage.setItem("check-clock-filled", val);
+	localStorage["check-clock-filled"] = val;
 });
 eventDispatcher.on('check-progress:changed', (val) => {
-	localStorage.setItem("check-progress", val);
+	localStorage["check-progress"] = val;
 });
 
 

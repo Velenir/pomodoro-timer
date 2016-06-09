@@ -17,18 +17,20 @@ const src = {
 	jade: '*.jade',
 	jadePartials: 'partials/*jade',
 	js: ['js/pubsub.js', 'js/*.js'],
-	img: 'images/*'
+	img: 'images/*',
+	audio: 'audio/*'
 };
 
 const dist = {
 	base: 'dist',
 	css: 'dist/css',
 	js: 'dist/js',
-	img: 'dist/images'
+	img: 'dist/images',
+	audio: 'dist/audio'
 };
 
 // Static Server + watching scss/jade files
-gulp.task('serve', ['sass', 'jade', 'javascript', 'images'], function() {
+gulp.task('serve', ['sass', 'jade', 'javascript', 'images', 'audio'], function() {
 	browserSync.init({
 		server: {
 			baseDir: dist.base
@@ -79,6 +81,13 @@ gulp.task('images', function () {
 		.pipe(gulp.dest(dist.img));
 });
 
+// Compress audio
+gulp.task('audio', function () {
+	return gulp.src(src.audio)
+		// .pipe(imagemin())
+		.pipe(gulp.dest(dist.audio));
+});
+
 gulp.task('default', ['serve']);
 
 
@@ -112,7 +121,7 @@ function replaceWithDataURI(fileRegExp) {
 gulp.task('datauri', function() {
 	return gulp.src(src.js)
 		.pipe(concat('bundle.replaced.js'))
-		.pipe(replaceWithDataURI(/["'](?:\.\/)?images\/([-\w.]+.(?:svg|png|jpg|jpeg|gif))["']/g))
+		.pipe(replaceWithDataURI(/["'](?:\.\/)?(?:images|audio)\/[-\w./]+\.(?:svg|png|jpg|jpeg|gif|mp3|ogg|wav)["']/g))
 		// .pipe(iife())
 		.pipe(gulp.dest("misc"));
 });

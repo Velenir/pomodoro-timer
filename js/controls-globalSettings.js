@@ -13,7 +13,6 @@ pauseOnWorkStart.addEventListener('change', function () {
 	eventDispatcher.emit('check-pause-on-work-start:changed', this.checked);
 });
 
-// TODO: sound
 
 // .globalSettings > .notificationControls
 
@@ -45,9 +44,8 @@ notifyOnBreak.onclick = notifyOnWork.onclick = askForPermission;
 })();
 
 function askForPermission() {
-	// ask only once
-	notifyOnBreak.onclick = notifyOnWork.onclick = null;
-	testForNotification();
+	// if notification checkboxes are checked
+	if(this.checked) testForNotification();
 }
 
 function disableNotifyChecks() {
@@ -61,12 +59,19 @@ function testForNotification() {
 
 	// if permission wasn't denied previously
 	if (Notification.permission !== 'denied') {
-		// returns a Promise resolved with granted or denied, doesn't do anything on default (when dismessed)
+		// returns a Promise resolved with granted or denied, doesn't do anything on default (when dismissed)
 		Notification.requestPermission().then(function (result) {
 			if(result === "denied") {
+				// ask only once
+				notifyOnBreak.onclick = notifyOnWork.onclick = null;
 				// if no permission, uncheck and disable
 				disableNotifyChecks();
+			} else if(result === "granted") {
+				// ask only once
+				notifyOnBreak.onclick = notifyOnWork.onclick = null;
 			}
+			// don't do anything === ask again later if(result === "default")
+			console.log("NOTIFY REQUEST", result);
 		});
 	}
 }
@@ -98,6 +103,7 @@ function fireNotification(sessionName) {
 			window.focus();
 			notification.close();
 		});
+		console.log(notification);
 	}
 }
 

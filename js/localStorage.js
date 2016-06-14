@@ -10,7 +10,7 @@ function restoreSettings() {
 	pauseOnWorkStart.checked = getStoredItem("check-pause-on-work-start");
 
 	// .notificationControls
-	if(notifyOnBreak){
+	if(notifyOnBreak && ("Notification" in window) && Notification.permission === "granted"){
 		// check that .notificationControls weren't removed
 		notifyOnBreak.checked = getStoredItem("notify-break");
 		notifyOnWork.checked = getStoredItem("notify-work");

@@ -2,8 +2,6 @@ extend partials/layout
 
 block content
 	include partials/defaults
-	- const defaults = {}
-	+defaults(defaults)
 	.wrapper.transparent
 		.globalSettings
 			.panel.notificationControls
@@ -59,7 +57,7 @@ block content
 						- let tomatoMaskId = "tomatoMask"
 						mask(id=tomatoMaskId)
 							circle(cx='50%', cy='50%', r='51%', fill="#844f4f")
-							path(id="arcMask", d="M50,0  a50,50 0 1,0 0.03141592446881286,0.000009869604078005523 z", fill="white" stroke="black")
+							path(id="arcMask", d="M50,0	a50,50 0 1,0 0.03141592446881286,0.000009869604078005523 z", fill="white" stroke="black")
 						clipPath(id=clickhoverMaskId, clipPathUnits="objectBoundingBox")
 							circle(cx='0.5', cy='0.5', r='0.51')
 					- const displayTomatoIcon = defaults.checkboxes.get("icon-clock-filled")
@@ -86,16 +84,45 @@ block content
 				li
 					span Work session: 
 					button#work-25(type="button"): span 25
-					|  min.
+					|	min.
 				hr
 				li
 					span Short break: 
 					button#short-break-5(type="button"): span 5
-					|  min.
+					|	min.
 				li
 					span Long Break: 
 					button#long-break-15(type="button"): span 15
 					| , 
 					button#long-break-30(type="button"): span 30
-					|  min.
+					|	min.
 					
+		.panel.audioControls.default-sound
+			.upper-subpanel
+				.speaker-container
+					svg#speakerSvg.speaker(viewbox='0 0 100 100', width='100px', height='100px')
+						defs
+							radialgradient#radial1(fx='25%', fy='25%', r='65%', spreadmethod='pad')
+								stop(offset='0%', stop-color='gray', stop-opacity='1')
+								stop(offset='100%', stop-color='white', stop-opacity='1')
+							pattern#pattern1(x='10', y='10', width='10', height='10', patternunits='userSpaceOnUse', patterntransform='rotate(45) scale(0.6)')
+								rect(x='0', y='0', height='10', width='10', style='stroke: black; fill: url(#radial1);', rx='2.5')
+							filter#filter6678(style='color-interpolation-filters:sRGB;')
+								feturbulence#feTurbulence6680(type='fractalNoise', numoctaves='5', seed='0', basefrequency='0.052999999999999999', result='turbulence')
+								fedisplacementmap#feDisplacementMap6682(in='SourceGraphic', in2='turbulence', scale='3', ychannelselector='G', xchannelselector='R')
+						circle#speakerInner(style='fill:black;', cy='50', cx='50', r='20')
+						circle(cx='50', cy='50', r='50', style='stroke:none;fill:url(#pattern1);filter:url(#filter6678);')
+				.slider
+					span max
+					input#volume(type='range', min='0', max='1', value='0.5', step='0.05', orient='vertical')
+					span min
+				span.vert volume
+				
+			.lower-subpanel
+				button#reset-upload-btn(type='button', value='upload') Custom sound
+				input#file-upload(type='file', accept='audio/*')
+			svg.corner(viewbox='0 0 100 100', preserveaspectratio='xMaxYMax')
+				defs
+					path#cornerPath(d='M17,98 l61,0 a20,20 0 0,0 20,-20 l0,-50', style='stroke:#660000; stroke-width:2; fill:none;')
+				text(x='0', color='')
+					textpath(xlink:href='#cornerPath') drop a custom sound file

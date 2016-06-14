@@ -18,6 +18,7 @@ button {
 @import "partials/checkboxes";
 @import "partials/icons";
 @import "partials/progressbar";
+@import "partials/audiocontrols";
 
 $relative-size: 50;
 $max-size: 400px;
@@ -149,7 +150,7 @@ body {
 	text-shadow: 0.5px 0.5px gray;
 	margin: 10px;
 	background-color: #DC2C2C;
-	color: #E8D0D7;
+	color: wheat;
 
 	> ul span {
 		color: inherit;
@@ -266,7 +267,7 @@ body {
 		// left, right: 0 doesn't fit on one line in Firefox
 		left: -20%;
 		right: -20%;
-		color: darken($timingControls-text-color, 20%);
+		color: wheat;
 		font-weight: bold;
 	}
 	.time {

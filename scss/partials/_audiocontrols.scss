@@ -1,8 +1,15 @@
 .panel.audioControls {
-	position: relative;
+	position: absolute;
+	right: 0;
+	bottom: 0;
 	border-radius: 40% 10px 20px 10px / 30% 10px 20px 10px;
 	padding: 8px 0 8px 8px;
 	text-shadow: none;
+	box-shadow: raisedshadow(-3, -0.7);
+
+	@media screen and (max-width: 630px) {
+		position: static;
+	}
 
 	.upper-subpanel {
 		display: flex;

@@ -15,26 +15,6 @@ button {
 	}
 }
 
-@import "partials/checkboxes";
-@import "partials/icons";
-@import "partials/progressbar";
-@import "partials/audiocontrols";
-
-$relative-size: 50;
-$max-size: 400px;
-$tomato-font-size: 3em;
-$tomato-timer-font-size: 2.5em;
-$seconds-left-radius: 51;
-
-$body-color: #DA2222 !default;
-$timingControls-color: #DC2C2C !default;
-$timingControls-text-color: white !default;
-$tomato-text-color: white !default;
-$tomato-minutes-color: #c8b9b9 !default;
-$tomato-secondsleft-color: #A59C7D !default;
-
-@import url(https://fonts.googleapis.com/css?family=Pacifico|Open+Sans:300);
-
 .show {
 	display: unset !important;
 }
@@ -78,6 +58,26 @@ $tomato-secondsleft-color: #A59C7D !default;
 @function raisedshadow($xFactor: 0, $yFactor: 1) {
 	@return $xFactor*3px $yFactor*3px 5px 0 rgba(0, 0, 0, 0.2), $xFactor*3px $yFactor*5px 10px 0 rgba(0, 0, 0, 0.247059), $xFactor*3px $yFactor*20px 20px 0 rgba(0, 0, 0, 0.14902);
 }
+
+@import "partials/checkboxes";
+@import "partials/icons";
+@import "partials/progressbar";
+@import "partials/audiocontrols";
+
+$relative-size: 50;
+$max-size: 400px;
+$tomato-font-size: 3em;
+$tomato-timer-font-size: 2.5em;
+$seconds-left-radius: 51;
+
+$body-color: #DA2222 !default;
+$timingControls-color: #DC2C2C !default;
+$timingControls-text-color: white !default;
+$tomato-text-color: white !default;
+$tomato-minutes-color: #c8b9b9 !default;
+$tomato-secondsleft-color: #A59C7D !default;
+
+@import url(https://fonts.googleapis.com/css?family=Pacifico|Open+Sans:300);
 
 html {
 	font-size: 16px;
@@ -165,6 +165,11 @@ body {
 
 	@media screen and (max-width: 1280px) {
 		position: static;
+		align-self: flex-start;
+	}
+
+	@media screen and (max-width: 630px) {
+		align-self: auto;
 	}
 
 	> ul {

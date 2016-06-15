@@ -50,6 +50,7 @@ $groove-border-colors: #a42d00 #b99696 #b99696 #a42d00;
 		&:active:not(:disabled), &:active:focus:not(:disabled) {
 			box-shadow: none;
 			border: 1px solid $general-shadow-and-border-color;
+			padding-bottom: 2px;
 		}
 
 		&:disabled {

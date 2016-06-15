@@ -17,6 +17,12 @@ button {
 		cursor: not-allowed;
 		color: $button-disabled-text-color;
 	}
+
+	// reset for Firefox
+	&:active:hover {
+		padding-left: 6px;
+		padding-right: 6px;
+	}
 }
 
 .show {

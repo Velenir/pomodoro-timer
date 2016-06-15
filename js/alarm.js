@@ -108,7 +108,7 @@ const speakerInner = document.getElementById("speakerInner");
 function speakerTremble(){
 	turbulence.seed.baseVal = (turbulence.seed.baseVal + 1) % 100;
 	speakerInner.r.baseVal.value += speakerTremble.radCoeff * 0.5;
-	if(speakerInner.r.baseVal.value > 28) speakerTremble.radCoeff = -1;
+	if(speakerInner.r.baseVal.value > 25) speakerTremble.radCoeff = -1;
 	else if(speakerInner.r.baseVal.value < 20) speakerTremble.radCoeff = 1;
 
 	if(speakerTremble.on) requestAnimationFrame(speakerTremble);

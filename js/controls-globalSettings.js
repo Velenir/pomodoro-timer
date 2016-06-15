@@ -44,8 +44,8 @@ notifyOnBreak.onclick = notifyOnWork.onclick = askForPermission;
 })();
 
 function askForPermission() {
-	// if notification checkboxes are checked
-	if(this.checked) testForNotification();
+	// if any notification checkbox is checked
+	if(notifyOnBreak.checked || notifyOnWork.checked) testForNotification();
 }
 
 function disableNotifyChecks() {
@@ -93,21 +93,21 @@ function fireNotification(sessionName) {
 	const itsBreakTime = sessionName === "break";
 	if((itsBreakTime && notifyOnBreak.checked) || (!itsBreakTime && notifyOnWork.checked)) {
 		notification = buildNotification(itsBreakTime);
-		notification.addEventListener('close', function () {
+		notification.onclose = function () {
 			console.log("notification closed");
 			// don't keep the reference
 			notification = null;
-		});
-		notification.addEventListener('click', function () {
+		};
+		notification.onclick = function () {
 			console.log("notification clicked");
 			window.focus();
 			notification.close();
-		});
+		};
 		console.log(notification);
 	}
 }
 
-const icon = "images/clock_red.png";
+const icon = "/images/clock_red.png";
 
 function buildNotification(itsBreakTime) {
 	const title = itsBreakTime ? "Time for a Break" : "Time for Work";

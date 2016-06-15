@@ -2,7 +2,7 @@
 
 eventDispatcher.on('timer:session-changed', function ({reason}) {
 	// don't fire on skipSession
-	if(reason === "previous-session-ended" && checkVolume.checked)	playSound();
+	if(reason === "previous-session-ended" && checkVolume.checked)	playSound(true);
 });
 
 
@@ -44,7 +44,6 @@ function revertToDefault() {
 	resetUploadBtn.value = "upload";
 	panel.classList.add("default-sound");
 
-
 	eventDispatcher.emit("alarm-sound:reset");
 }
 
@@ -57,19 +56,21 @@ fileUpload.addEventListener("change", function() {
 
 const speakerSvg = document.getElementById("speakerSvg");
 const speakerContainer = speakerSvg.parentElement;
-speakerSvg.addEventListener("click", playSound);
+speakerSvg.addEventListener("click", () => playSound());
 
-function playSound() {
+function playSound(restart = false) {
 	if (audio.error || !audio.src) return;
+	console.log("AUDIO PAUSED", audio.paused);
 
 	if (audio.paused) {
 		audio.play();
-	}
-	else {
-		audio.pause();
+	}	else {
+		// play from start if currently playing after being triggered by user
+		if(!restart) audio.pause();
 		audio.currentTime = 0;
 	}
 }
+
 
 function handleFile(file) {
 	console.log(file);

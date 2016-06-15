@@ -1,0 +1,21 @@
+.progress {
+	width: 50%;
+	max-width: $central-blocks-max-size;
+	min-width: 5 * $tomato-font-size;
+	margin-top: 30px;
+
+	> progress {
+		width: 100%;
+		border-color: #D62B2B;
+		background-color: #D15656;
+
+		&.progress-off {
+			@extend .invisible;
+			animation: none;
+		}
+
+		&::-webkit-progress-bar {
+			background-color: #D15656;
+		}
+	}
+}

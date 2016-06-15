@@ -1,0 +1,106 @@
+.globalSettings {
+	width: 100%;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+
+	@media screen and (max-width: 500px) {
+		justify-content: space-around;
+	}
+
+	> .panel {
+		margin-bottom: 0;
+
+		> ul {
+			list-style: none;
+			padding-left: 1em;
+		}
+
+		&:first-child {
+			box-shadow: raisedshadow(3, 0.7);
+		}
+
+		&:last-child {
+			box-shadow: raisedshadow(-3, 0.7);
+		}
+	}
+}
+
+.panel {
+	border: 3px solid $panel-border-color;
+	border-radius: 20px;
+	padding: 0.5em 1em;
+	text-shadow: 0.5px 0.5px $general-shadow-and-border-color;
+	margin: 10px;
+	background-color: $panel-color;
+	color: $general-text-color;
+
+	> ul span {
+		color: inherit;
+	}
+}
+
+.panel.pomodoroDefaults {
+	box-shadow: raisedshadow(3, -0.7);
+	position: absolute;
+	left: 0;
+	bottom: 0;
+
+	@media screen and (max-width: 1280px) {
+		position: static;
+		align-self: flex-start;
+	}
+
+	@media screen and (max-width: 630px) {
+		align-self: auto;
+	}
+
+	> ul {
+		list-style-type: square;
+	}
+
+	li {
+		font-size: 1.6em;
+		margin-bottom: 5px;
+
+		// to make li > span the same size across Chrome and Firefox
+		@media screen and (min--moz-device-pixel-ratio: 0) {
+			font-size: 1.2em;
+		}
+
+		> span {
+			display: inline-block;
+			min-width: 155px;
+		}
+	}
+
+	hr {
+		margin-left: -30px;
+	}
+
+	button {
+
+		border: 1px solid $general-shadow-and-border-color;
+		font-size: 1em;
+		width: 2em;
+		height: 2em;
+		border-radius: 50%;
+		outline: none;
+		background-color: $panel-button-color;
+		color: inherit;
+
+		&:active:not(:disabled), &:active:focus:not(:disabled) {
+			box-shadow: inset 0 0 1px 2px #B53232, inset 0 0 1px 2px $general-shadow-and-border-color;
+
+			> span {
+				display: inline-block;
+				transform: scale(0.95);
+			}
+		}
+
+		&:disabled {
+			background-color: $panel-color;
+			color: $button-disabled-text-color;
+		}
+	}
+}

@@ -1,0 +1,115 @@
+.tomatoTimer {
+	width: $central-blocks-relative-size * 1%;
+	// vw keeps height dependent on width (square)
+	height: $central-blocks-relative-size * 1vw;
+	max-width: $central-blocks-max-size;
+	max-height: $central-blocks-max-size;
+	min-width: 5 * $tomato-font-size;
+	min-height: 5 * $tomato-font-size;
+	border-radius: 50%;
+	background-color: red;
+	position: relative;
+	box-shadow: 0 0 10px 5px #555;
+	transition: box-shadow 2s, transform 2s;
+	cursor: pointer;
+
+	&:active {
+		box-shadow: none;
+		transform: scale(.99);
+		transition: box-shadow .5s, transform .5s;
+	}
+
+	* {
+		user-select: none;
+	}
+
+	p {
+		text-align: center;
+		font-size: $tomato-font-size;
+		color: $tomato-text-color;
+	}
+
+	.session {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		letter-spacing: .2em;
+		font: bold 0.75em monospace;
+
+		> p:first-child {
+			margin-bottom: 0;
+			letter-spacing: .3em;
+			text-transform: capitalize;
+		}
+
+		> p:nth-child(2) {
+			margin: 0;
+
+			@media screen and (max-width: 650px) {
+				display: none;
+			}
+		}
+
+		> p:last-child {
+			margin-top: 0;
+			letter-spacing: initial;
+		}
+	}
+
+	.seconds {
+		position: absolute;
+		bottom: 5%;
+		left: 0;
+		right: 0;
+		transform: translateX(-1.5%);
+		margin: 0;
+	}
+
+	> .svgSpace {
+		> svg {
+			overflow: visible;
+
+			.all-tomato {
+				transition: opacity 1.5s;
+			}
+
+			> text {
+				font-size: $tomato-timer-font-size;
+
+				$stroke-dArr: strip-units($tomato-timer-font-size) * 220;
+				$f-stroke-dArr: floor($stroke-dArr/3.666);
+				stroke-dasharray: $stroke-dArr $stroke-dArr;
+				text-anchor: middle;
+				dominant-baseline: central;
+				fill: none;
+				stroke: $tomato-minutes-color;
+				stroke-width: .7;
+
+				transition: stroke-dashoffset 1s linear;
+
+				// Firefox specific numbers
+				@media screen and (min--moz-device-pixel-ratio: 0) {
+					stroke-dasharray: $f-stroke-dArr $f-stroke-dArr;
+				}
+
+				&.changing {
+					stroke-dashoffset: $stroke-dArr;
+					transition: stroke-dashoffset 2s linear !important;
+
+					@media screen and (min--moz-device-pixel-ratio: 0) {
+						stroke-dashoffset: $f-stroke-dArr;
+					}
+				}
+			}
+
+			> #secondsLeft {
+				$darr: round($seconds-left-radius * 6.285714286);
+				stroke-dasharray: dashlist($darr) $darr;
+				stroke: $tomato-secondsleft-color;
+				stroke-width: 2;
+				fill: none;
+			}
+		}
+	}
+}

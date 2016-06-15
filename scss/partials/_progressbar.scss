@@ -121,8 +121,8 @@ progress {
 		&::-webkit-progress-inner-element,
 		&::-webkit-progress-value {
 			/* ShadowDOM can't access @keyframes from outside
-			Other than inject styles into the Component itself, we can make inside elements inherit the animated values
-			This is ugly and heavy processing */
+			Other than injecting styles into the Component itself, we can make inside elements inherit the animated values
+			Which is kind of ugly */
 			background-position: inherit;
 		}
 		&::-moz-progress-bar {

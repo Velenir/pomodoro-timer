@@ -110,11 +110,14 @@ const sessionText = document.getElementById('sessionName');
 
 eventDispatcher.on('timer:session-changed', ({started: {session: {name: sessionName, len: seconds}}}) => {
 	sessionText.textContent = sessionName;
+
+	// change page title to reflect current session
+	document.title = sessionName === "work" ? "Work Time" : "Break Time";
 });
 
 const pausedStateText = document.getElementById('pausedState');
 
-eventDispatcher.on('timer:state-changed', ({currentState, reason}) => {
+eventDispatcher.on('timer:state-changed', ({currentState, session: {name: sessionName}, reason}) => {
 	const paused = currentState === "paused";
 
 	if(paused && reason === "paused-on-start") {
@@ -124,6 +127,11 @@ eventDispatcher.on('timer:state-changed', ({currentState, reason}) => {
 	}
 
 	pausedStateText.classList.toggle("hidden", !paused);
+
+	// reflect paused state in the page title
+	let title = sessionName === "work" ? "Work Time" : "Break Time";
+	if(paused) title += " : Paused";
+	document.title = title;
 });
 
 

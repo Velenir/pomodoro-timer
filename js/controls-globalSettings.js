@@ -120,6 +120,6 @@ function buildNotification(itsBreakTime) {
 
 eventDispatcher.on('timer:session-changed', ({started: {session: {name}}, reason}) => {
 	console.log("session started", name, "for reason", reason);
-	// don't fire on skipSession
+	// don't Notification fire on skipSession
 	if(reason === "previous-session-ended")	fireNotification(name);
 });

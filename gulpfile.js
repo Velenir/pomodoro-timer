@@ -55,7 +55,7 @@ gulp.task('sass', function() {
 
 // Compile jade into HTML
 gulp.task('jade', function() {
-	let locals = {};
+	let locals = {title: "Productivity Timer"};
 
 	return gulp.src(src.jade)
 		.pipe(jade({ locals }))

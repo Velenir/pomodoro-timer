@@ -63,11 +63,6 @@
 		font-size: 1.2em;
 		margin-bottom: 5px;
 
-		// to make li > span the same size across Chrome and Firefox
-		@media screen and (min--moz-device-pixel-ratio: 0) {
-			font-size: 1.2em;
-		}
-
 		> span {
 			display: inline-block;
 			min-width: 155px;

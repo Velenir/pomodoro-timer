@@ -38,3 +38,17 @@ body {
 @import "partials/tomatotimer";
 @import "partials/hiddenprogress";
 @import url(https://fonts.googleapis.com/css?family=Pacifico|Open+Sans:300);
+
+.pauseControls {
+	position: relative;
+
+	> .gitLink {
+		position: absolute;
+		top: 4px;
+		right: 4px;
+
+		> img {
+			width: 25px;
+		}
+	}
+}

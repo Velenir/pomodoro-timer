@@ -1,33 +1,41 @@
 // store user settings between sessions
 
-function getStoredItem(keyName) {
+function parseStoredItem(keyName) {
 	return JSON.parse(localStorage[keyName]);
 }
 
 function restoreSettings() {
 	// .pauseControls
-	pauseOnBreakStart.checked = getStoredItem("check-pause-on-break-start");
-	pauseOnWorkStart.checked = getStoredItem("check-pause-on-work-start");
+	pauseOnBreakStart.checked = parseStoredItem("check-pause-on-break-start");
+	pauseOnWorkStart.checked = parseStoredItem("check-pause-on-work-start");
 
 	// .notificationControls
 	if(notifyOnBreak && ("Notification" in window) && Notification.permission === "granted"){
 		// check that .notificationControls weren't removed
-		notifyOnBreak.checked = getStoredItem("notify-break");
-		notifyOnWork.checked = getStoredItem("notify-work");
+		notifyOnBreak.checked = parseStoredItem("notify-break");
+		notifyOnWork.checked = parseStoredItem("notify-work");
 	}
 
 	// .timingComtrols
 	// .workTimer
-	workTime.textContent = getStoredItem("work-timer");
+	workTime.textContent = parseStoredItem("work-timer");
 
 	// .breakTimer
-	breakTime.textContent = getStoredItem("break-timer");
+	breakTime.textContent = parseStoredItem("break-timer");
 
 	// .midPanel
-	checkVolume.checked = getStoredItem("check-volume");
-	checkClockSeconds.checked = getStoredItem("check-clock-seconds");
-	checkClockFilled.checked = getStoredItem("check-clock-filled");
-	checkProgress.checked = getStoredItem("check-progress");
+	checkVolume.checked = parseStoredItem("check-volume");
+	checkClockSeconds.checked = parseStoredItem("check-clock-seconds");
+	checkClockFilled.checked = parseStoredItem("check-clock-filled");
+	checkProgress.checked = parseStoredItem("check-progress");
+
+	// alarm sound; a string, so don't parse
+	const alarmSound = localStorage["alarm-sound"];
+	// if alarm-sound exists assign it and set custom values where necessary, otherwise set defaultSound and don't touch the values
+	if(alarmSound) {
+		audio.src = alarmSound;
+		setCustomSoundValues();
+	}
 }
 
 
@@ -73,6 +81,14 @@ eventDispatcher.on('check-progress:changed', (val) => {
 	localStorage["check-progress"] = val;
 });
 
+// alarm sound
+eventDispatcher.on('alarm-sound:set', (sound) => {
+	localStorage["alarm-sound"] = sound;
+});
+eventDispatcher.on('alarm-sound:reset', () => {
+	delete localStorage["alarm-sound"];
+});
+
 
 // populate localStorage on initial start
 function saveInitSettings() {
@@ -108,7 +124,7 @@ window.addEventListener('DOMContentLoaded', function () {
 		try {
 			restoreSettings();
 		} catch (e) {
-			console.log("Error", e);
+			console.log("JSON parsing Error", e);
 		}
 	}
 	document.querySelector(".wrapper").classList.remove("transparent");

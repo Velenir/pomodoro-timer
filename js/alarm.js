@@ -24,7 +24,6 @@ function setCustomSoundValues() {
 
 const defaultSound = "audio/alarm.mp3";
 const audio = new Audio(defaultSound);
-console.log("audio", audio);
 resetUploadBtn.addEventListener("click", function() {
 	if (this.value === "upload") {
 		// empty fileUpload.files
@@ -44,6 +43,9 @@ function revertToDefault() {
 	resetUploadBtn.textContent = "Custom sound";
 	resetUploadBtn.value = "upload";
 	panel.classList.add("default-sound");
+
+
+	eventDispatcher.emit("alarm-sound:reset");
 }
 
 fileUpload.addEventListener("change", function() {
@@ -58,7 +60,7 @@ const speakerContainer = speakerSvg.parentElement;
 speakerSvg.addEventListener("click", playSound);
 
 function playSound() {
-	if (audio.error) return;
+	if (audio.error || !audio.src) return;
 
 	if (audio.paused) {
 		audio.play();
@@ -73,8 +75,10 @@ function handleFile(file) {
 	console.log(file);
 	const reader = new FileReader();
 	reader.onload = function(e) {
-		audio.src = e.target.result;
+		console.log("alarm-sound setting");
+		eventDispatcher.emit("alarm-sound:set", audio.src = e.target.result);
 		speakerContainer.classList.remove("playing");
+
 	};
 	reader.readAsDataURL(file);
 }

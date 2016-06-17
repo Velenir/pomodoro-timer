@@ -9,6 +9,10 @@ const concat = require('gulp-concat');
 const imagemin = require('gulp-imagemin');
 const sourcemaps = require('gulp-sourcemaps');
 const iife = require("gulp-iife");
+const uglify = require('gulp-uglify');
+const babel = require('gulp-babel');
+const del = require('del');
+const runSequence = require('run-sequence');
 
 
 const src = {
@@ -42,6 +46,15 @@ gulp.task('serve', ['sass', 'jade', 'javascript', 'images', 'audio'], function()
 	gulp.watch(src.js, ['javascript']);
 });
 
+gulp.task('clean', function(){
+	return del('dist');
+});
+
+gulp.task('build', function(callback) {
+	runSequence('clean', ['sass', 'jade', 'javascript-pub', 'images', 'audio'], callback);
+});
+
+
 // Compile sass into CSS
 gulp.task('sass', function() {
 	return gulp.src(src.scss)
@@ -64,14 +77,26 @@ gulp.task('jade', function() {
 });
 
 // Concat all jscripts, keeping non-hoisted classes declarations first
-gulp.task('javascript', function() {
+
+function processJS(uglifyOptions) {
 	return gulp.src(src.js)
 		.pipe(sourcemaps.init())
 		.pipe(concat('bundle.js'))
-		// .pipe(iife())
+		.pipe(babel({ presets: ['es2015'] }))
+		.pipe(iife())
+		.pipe(uglify(uglifyOptions))
 		.pipe(sourcemaps.write('../maps'))
 		.pipe(gulp.dest(dist.js))
 		.pipe(browserSync.stream({once: true}));
+}
+
+gulp.task('javascript', function() {
+	return processJS();
+});
+
+gulp.task('javascript-pub', function() {
+	const uglifyOptions = {compress: {drop_console: true}};
+	return processJS(uglifyOptions);
 });
 
 // Compress images
@@ -81,10 +106,9 @@ gulp.task('images', function () {
 		.pipe(gulp.dest(dist.img));
 });
 
-// Compress audio
+// Copy audio
 gulp.task('audio', function () {
 	return gulp.src(src.audio)
-		// .pipe(imagemin())
 		.pipe(gulp.dest(dist.audio));
 });
 
@@ -103,7 +127,7 @@ const mime = require('mime');
 function replaceWithDataURI(fileRegExp) {
 	function base64(fpath) {
 		const absPath = process.cwd() + "/" + fpath.replace(/["']/g, '');
-		console.log(absPath);
+		console.log("dataURI:", absPath);
 		let fileData;
 		try {
 			fileData = fs.readFileSync(absPath);
@@ -118,10 +142,40 @@ function replaceWithDataURI(fileRegExp) {
 }
 
 
+function stripConsole() {
+	return replace(/\bconsole.log\(.+\)\s*?(;|\n)/g, '');
+}
+
+
 gulp.task('datauri', function() {
 	return gulp.src(src.js)
-		.pipe(concat('bundle.replaced.js'))
-		.pipe(replaceWithDataURI(/["'](?:\.\/)?(?:images|audio)\/[-\w./]+\.(?:svg|png|jpg|jpeg|gif|mp3|ogg|wav)["']/g))
-		// .pipe(iife())
-		.pipe(gulp.dest("misc"));
+		.pipe(concat('bundle.replacedURI.js'))
+		.pipe(replaceWithDataURI(/(["'])(?:\.*\/)*((?:images|audio)\/[\w\/]+)\.(?:svg|png|jpg|jpeg|gif|mp3|ogg|wav)\1/g))
+		.pipe(stripConsole())
+		.pipe(iife())
+		.pipe(gulp.dest("../pomodoro-misc"));
+});
+
+
+const remoteHost = "http://github.com/";
+
+
+gulp.task('repath', function() {
+	return gulp.src(src.js)
+		.pipe(concat('bundle.replacedPath.js'))
+		// prepend remote host
+		.pipe(replace(/(["'])(?:\.*\/)*((?:images|audio)\/[-\w\/.]+)\1/g, remoteHost + (remoteHost.endsWith("/") ? "$2" : "/$2")))
+		.pipe(stripConsole())
+		.pipe(iife())
+		.pipe(gulp.dest("../pomodoro-misc"));
+});
+
+
+// publish to gh-pages
+
+const ghPages = require('gulp-gh-pages');
+
+gulp.task('deploy', ['build'], function() {
+	return gulp.src('./dist/**/*')
+    .pipe(ghPages());
 });

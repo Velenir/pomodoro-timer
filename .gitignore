@@ -46,6 +46,7 @@ dump
 
 #distribution ready files
 dist
+.publish
 
 #dotenv environment file
 .env

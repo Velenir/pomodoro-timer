@@ -36,6 +36,8 @@ function restoreSettings() {
 		audio.src = alarmSound;
 		setCustomSoundValues();
 	}
+
+	volumeSlider.value = audio.volume = parseStoredItem("alarm-volume");
 }
 
 
@@ -88,6 +90,9 @@ eventDispatcher.on('alarm-sound:set', (sound) => {
 eventDispatcher.on('alarm-sound:reset', () => {
 	delete localStorage["alarm-sound"];
 });
+eventDispatcher.on('alarm-volume:set', (val) => {
+	localStorage["alarm-volume"] = val;
+});
 
 
 // populate localStorage on initial start
@@ -115,6 +120,9 @@ function saveInitSettings() {
 	eventDispatcher.emit('check-clock-seconds:changed', checkClockSeconds.checked);
 	eventDispatcher.emit('check-clock-filled:changed', checkClockFilled.checked, true);
 	eventDispatcher.emit('check-progress:changed', checkProgress.checked);
+
+	// alarm volume
+	eventDispatcher.emit("alarm-volume:set", audio.volume);
 }
 
 // when all resources are loaded and event listeners connected, try to restore settings

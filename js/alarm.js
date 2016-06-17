@@ -10,7 +10,8 @@ eventDispatcher.on('timer:session-changed', function ({reason}) {
 const volumeSlider = document.getElementById("volume");
 
 volumeSlider.oninput = function() {
-	audio.volume = this.value;
+	console.log("volume changed", this.value);
+	eventDispatcher.emit("alarm-volume:set", audio.volume = this.value);
 };
 
 const fileUpload = document.getElementById("file-upload");
@@ -24,6 +25,7 @@ function setCustomSoundValues() {
 
 const defaultSound = "audio/alarm.mp3";
 const audio = new Audio(defaultSound);
+audio.volume = volumeSlider.value;
 resetUploadBtn.addEventListener("click", function() {
 	if (this.value === "upload") {
 		// empty fileUpload.files

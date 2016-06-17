@@ -77,8 +77,20 @@ gulp.task('jade', function() {
 });
 
 // Concat all jscripts, keeping non-hoisted classes declarations first
+gulp.task('javascript', function() {
+	return gulp.src(src.js)
+		.pipe(sourcemaps.init())
+		.pipe(concat('bundle.js'))
+		.pipe(sourcemaps.write('../maps'))
+		.pipe(gulp.dest(dist.js))
+		.pipe(browserSync.stream({once: true}));
+});
 
-function processJS(uglifyOptions) {
+
+// Make publish-ready
+gulp.task('javascript-pub', function() {
+	const uglifyOptions = {compress: {drop_console: true}};
+
 	return gulp.src(src.js)
 		.pipe(sourcemaps.init())
 		.pipe(concat('bundle.js'))
@@ -88,15 +100,6 @@ function processJS(uglifyOptions) {
 		.pipe(sourcemaps.write('../maps'))
 		.pipe(gulp.dest(dist.js))
 		.pipe(browserSync.stream({once: true}));
-}
-
-gulp.task('javascript', function() {
-	return processJS();
-});
-
-gulp.task('javascript-pub', function() {
-	const uglifyOptions = {compress: {drop_console: true}};
-	return processJS(uglifyOptions);
 });
 
 // Compress images

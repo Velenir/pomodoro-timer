@@ -107,7 +107,7 @@ function fireNotification(sessionName) {
 	}
 }
 
-const icon = "/images/clock_red.png";
+const icon = "images/clock_red.png";
 
 function buildNotification(itsBreakTime) {
 	const title = itsBreakTime ? "Time for a Break" : "Time for Work";

@@ -22,7 +22,7 @@ function setCustomSoundValues() {
 	panel.classList.remove("default-sound");
 }
 
-const defaultSound = "/audio/alarm.mp3";
+const defaultSound = "audio/alarm.mp3";
 const audio = new Audio(defaultSound);
 resetUploadBtn.addEventListener("click", function() {
 	if (this.value === "upload") {

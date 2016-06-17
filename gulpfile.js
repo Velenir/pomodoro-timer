@@ -175,7 +175,7 @@ gulp.task('repath', function() {
 
 const ghPages = require('gulp-gh-pages');
 
-gulp.task('deploy', ['build'], function() {
+gulp.task('publish', ['build'], function() {
 	return gulp.src('./dist/**/*')
     .pipe(ghPages());
 });

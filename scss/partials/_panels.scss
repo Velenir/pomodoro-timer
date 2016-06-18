@@ -46,12 +46,12 @@
 	left: 0;
 	bottom: 0;
 
-	@media screen and (max-width: 1280px) {
+	@media screen and (max-width: 1150px) {
 		position: static;
 		align-self: flex-start;
 	}
 
-	@media screen and (max-width: 630px) {
+	@media screen and (max-width: 585px) {
 		align-self: auto;
 	}
 

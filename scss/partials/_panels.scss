@@ -4,7 +4,7 @@
 	flex-flow: row wrap;
 	justify-content: space-between;
 
-	@media screen and (max-width: 500px) {
+	@media screen and (max-width: 620px) {
 		justify-content: space-around;
 	}
 
@@ -46,12 +46,12 @@
 	left: 0;
 	bottom: 0;
 
-	@media screen and (max-width: 1150px) {
+	@media screen and (max-width: 1175px) {
 		position: static;
 		align-self: flex-start;
 	}
 
-	@media screen and (max-width: 585px) {
+	@media screen and (max-width: 600px) {
 		align-self: auto;
 	}
 

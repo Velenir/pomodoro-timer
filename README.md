@@ -10,6 +10,7 @@ A productivity timer to be used for activities with a work/break sessions cycle.
 * Optional pause on session end
 * Skip session feature
 * Different indicators for overall progress, minutes and seconds
+* User settings persist in localStorage between page reloads
 * Pomodoro defaults at hand
 
 ---

@@ -160,14 +160,14 @@ gulp.task('datauri', function() {
 });
 
 
-const remoteHost = "http://github.com/";
+const remoteHost = "https://velenir.github.io/pomodoro-timer/";
 
 
 gulp.task('repath', function() {
 	return gulp.src(src.js)
 		.pipe(concat('bundle.replacedPath.js'))
 		// prepend remote host
-		.pipe(replace(/(["'])(?:\.*\/)*((?:images|audio)\/[-\w\/.]+)\1/g, remoteHost + (remoteHost.endsWith("/") ? "$2" : "/$2")))
+		.pipe(replace(/(["'])(?:\.*\/)*((?:images|audio)\/[-\w\/.]+)\1/g, `"${remoteHost}${remoteHost.endsWith("/") ? "$2" : "/$2"}"`))
 		.pipe(stripConsole())
 		.pipe(iife())
 		.pipe(gulp.dest("../pomodoro-misc"));

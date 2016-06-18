@@ -29,14 +29,7 @@ body {
 	margin-top: 0;
 }
 
-@import "partials/checkboxes";
-@import "partials/icons";
-@import "partials/progressbar";
-@import "partials/audiocontrols";
-@import "partials/panels";
-@import "partials/timingcontrols";
-@import "partials/tomatotimer";
-@import "partials/hiddenprogress";
+@import "partials/checkboxes", "partials/icons", "partials/progressbar", "partials/audiocontrols", "partials/panels", "partials/timingcontrols", "partials/tomatotimer", "partials/hiddenprogress";
 @import url(https://fonts.googleapis.com/css?family=Pacifico|Open+Sans:300);
 
 .pauseControls {
